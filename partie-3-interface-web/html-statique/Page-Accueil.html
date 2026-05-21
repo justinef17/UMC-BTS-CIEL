@@ -1,1 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>UMC - Unité Mobile de Compostage</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- affichage appareil mobile - meme largeur page web et écran - zoom initial  -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- pour utiliser classes bootstrap 5.3.3 pour style -  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> <!-- lien classes bootstrap 5.3.3 pour js intéractifs  -  -->
+</head>
 
+<body class="bg-light"> <!-- fond clair toute la page -->
+
+<!-- Barre supérieure de la page -->
+<div class="bg-success bg-gradient text-white py-1 px-3 d-flex justify-content-between flex-wrap" style="font-size:0.8rem;"> <!-- fond vert lumineux (couleur tridimention) et texte blanc avec espace en haut et bas (=py-1) & gauche droite (=px-3) flexbox active aligne les éléments (d-flex) retour à la ligne (flex-wrap), font-size taille du texte  -->
+  <span>Saint-Malo &nbsp;|&nbsp; contact@tridimension.fr</span> <!-- texte plus petit a cause du style, barre + espace entre chaque -->
+  <span>Projet BTS CIEL - Lycée Maupertuis</span> <!-- justify-content-between aligne a droite -->
+</div>
+
+<!-- Affichage barre supérieure -->
+<div class="bg-white border-bottom border-success border-3 py-3"> <!-- Fond blanc, bordure en bas de couleur verte et épaisse avec espacement bas-haut -->
+  <div class="container d-flex align-items-center justify-content-between flex-wrap gap-3"> <!-- contenu centré, flexbox actif, align-items-center centre éléments vertical, flex wrap pour ecran mobile petit passe les éléments à la ligne-->
+
+    <div class="d-flex align-items-center gap-3 flex-wrap">
+      <!-- Logo de l'entreprise Tridimension -->
+      <a href="https://tridimension.fr/" target="_blank"> <!-- Lien cliquable site de l'entreprise Tridimention, target ouvre dans une autre page-->
+        <img src="img/Logo-tridimension-01.png.webp" alt="Logo Tridimension" style="height:60px; object-fit:contain;"> <!-- Image logo tridimension, hauteur et empeche déformation -->
+      </a>
+
+      <div class="vr mx-2" style="height:55px;"></div> <!-- séparateur vertical, vr ligne verticale, mx-2 marge horizontale-->
+
+      <!-- Logo du lycée -->
+      <a href="https://lyceemaupertuis.bzh/lenseignement-superieur/" target="_blank"></a> <!-- Lien cliquable site lycée Maupertuis, target ouvre dans une autre page-->
+      <img src="img/cropped-logo-maupertuis-lycee-591561990.png" alt="Logo Lycée Maupertuis" style="height:55px; object-fit:contain;"> <!-- Image logo lycée Maupertuis, hauteur et empeche déformation -->
+      </a>
+      <div class="vr mx-2" style="height:55px;"></div> <!-- séparateur vertical, vr ligne verticale, mx-2 marge horizontale-->
+
+      <!-- Titre du site : UMC - Unité Mobile de Compostage -->
+      <div>
+        <div class="fw-bold text-success fs-5 lh-1">UMC</div> <!-- Texte vert gras, police moyenne, texte collé -->
+        <div class="text-muted small">Unité Mobile de Compostage</div> <!-- Texte gris clair plus petit -->
+      </div>
+    </div>
+
+    <a href="https://lyceemaupertuis.bzh/lenseignement-superieur/" target="_blank" class="text-decoration-none"> <!-- Lien cliquable site de Maupertuis, target ouvre dans une autre page, text-decoration-none enlève le soulignement du lien-->
+    <span class="badge bg-success fs-6 px-3 py-2">BTS CIEL - 2024-2026</span> <!-- Badge vert, petite talle de texte, espace gauche droite et haut bas -->
+    </a>
+  </div>
+</div>
+
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-sm bg-success navbar-dark"><!-- Barre de navigation bootstrap responsive sur fond vert avec texte clair -->
+  <div class="container-fluid"> <!-- prend largeur de écran et responsive -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUMC"> <!-- Bouton pour les petits écrans, data-bs-toggleactive ouverture/fermeture menu, data-bs-target cible élément à ouvrir   -->
+      <span class="navbar-toggler-icon"></span> <!-- affiche icone hamburger (trois traits verticaux) -->
+    </button>
+    <div class="collapse navbar-collapse" id="navbarUMC"> <!-- collapse permet de cacher le menu sur mobile -->
+      <ul class="navbar-nav"> <!-- liste de navigation -->
+        <li class="nav-item"><a class="nav-link active fw-semibold" href="Page-Accueil.html">Accueil</a></li> <!-- Page accueil page actuelle donc active (éclairé)-->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-synoptique.html">Synoptique</a></li> <!-- Page synoptique, fw-semibold texte gras leger -->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-graphique.html">Graphiques</a></li> <!-- Page graphiques -->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-téléchargement.html">Téléchargement</a></li> <!-- Page téléchargement-->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-contacts.html">Contacts</a></li> <!-- Page contacts -->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-Ressources.html">Ressources</a></li> <!-- Page ressources -->
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Présentation -->
+<div class="bg-success bg-gradient text-white py-5"> <!-- fond vert, dégradé, texte gris, espace haut bas -->
+  <div class="container"> <!-- centre le contenu -->
+    <div class="row align-items-center gy-4"> <!-- organise colonne, centre verticalement et espace vertical entreéléments -->
+
+      <div class="col-lg-7"> <!-- colonne largeur 7/12 -->
+        <h1 class="fw-bold display-6">Suivi en temps réel de l'Unité Mobile de Compostage (UMC)</h1> <!-- titre principal gras et grand de taille -->
+        <p class="lead mt-3 opacity-75"> <!-- description de l'ojectif du site, lead texte plus grand, marge en haut, et texte un peu tranparent -->
+          Plateforme pour superviser la production et consommation
+          électrique solaire de l'UMC, en partenariat avec TRIDIMENSION.
+        </p>
+        <div class="d-flex gap-3 flex-wrap mt-4"> <!--active flexbox, espace entre boutons, retour a la ligne ecran petit, marge en haut -->
+          <a href="Page-graphique.html" class="btn btn-light text-success fw-semibold">Visualisation des graphiques</a> <!-- lien vers page graphiques, style bouton bootstrap, bouton clair, texte vert, semi-gras -->
+          <a href="Page-téléchargement.html" class="btn btn-outline-light fw-semibold">Télécharger les données</a> <!-- lien vers page téléchargement, style bouton bootstrap, bouton bordure blanche, semi-gras -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Explication du projet -->
+<div class="container my-5"> <!-- espacement marge vertical (haut et bas) -->
+  <div class="row g-5"> <!-- colonne, emplacement colonne -->
+
+    <!-- Colonne de gauche -->
+    <div class="col-lg-4"> <!-- largeur de la colonne -->
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">Historique de l'UMC :</h2> <!-- texte en gras vert, bordure verte en bas du titre, petit espace entre le texte et sa bordure (pb-2), espace sous la bordure pour ne pas coller au paragraphe (mb-3) -->
+      <p class="text-muted small mb-3"> <!-- couleur texte en gris, texte réduit, espace (mb-3) -->
+       Depuis juin 2020, la société TRIDIMENSION a installé gracieusement dans l’enceinte du lycée Maupertuis une Unité Mobile de Compostage unique en France.
+       La convention établie entre le lycée et Tridimension assure un partenariat de deux ans (prolongé depuis) entre les parties concernées. 
+       Cette UMC est composée d’un composteur électromécanique et de son biofiltre contenus dans un conteneur maritime. 
+       Elle permet de valoriser les biodéchets du lycée en un compost de qualité. 
+      </p>
+
+      <!-- Carousel photos du projet -->
+      <div id="carouselUMC" class="carousel slide rounded-3 shadow border border-success-subtle mb-4" data-bs-ride="carousel"> <!-- déclare carousel avec animation slide, coin arrondis avec ombre, bordure vert clair, carrousel automatique -->
+        <div class="carousel-indicators"> <!-- indicateurs/bouton carrousel -->
+          <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="0" class="active"></button> <!-- Déclare le bouton à une img-->
+          <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="2"></button>
+          <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="3"></button>
+        </div>
+        <div class="carousel-inner rounded-3" style="height:220px;">  <!-- montrer qu'un image, fixer la hauteur pour pas que le carousel bouge-->
+          <div class="carousel-item active h-100"> <!-- première image (active), force à prendre toute la hauteur (h-100)-->
+            <img src="img/IMG_6871.jpeg" class="d-block w-100 h-100 object-fit-cover" alt="UMC 1"> <!-- image prend toute la largeur, et hauteur, permet de pas deformer l'image (object-fit-cover)-->
+          </div>
+          <div class="carousel-item h-100"> <!-- force à prendre toute la hauteur (h-100)-->
+            <img src="img/IMG_6873.jpeg" class="d-block w-100 h-100 object-fit-cover" alt="UMC 2"> <!-- image prend toute la largeur, et hauteur, permet de pas deformer l'image (object-fit-cover)-->
+          </div>
+          <div class="carousel-item h-100"> <!-- force à prendre toute la hauteur (h-100)-->
+            <img src="img/IMG_6874.jpeg" class="d-block w-100 h-100 object-fit-cover" alt="UMC 3"> <!-- image prend toute la largeur, et hauteur, permet de pas deformer l'image (object-fit-cover)-->
+          </div>
+          <div class="carousel-item h-100"> <!-- force à prendre toute la hauteur (h-100)-->
+            <img src="img/IMG_6878.jpeg" class="d-block w-100 h-100 object-fit-cover" alt="UMC 4"> <!-- image prend toute la largeur, et hauteur, permet de pas deformer l'image (object-fit-cover)-->
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselUMC" data-bs-slide="prev"> <!-- flèche prev precédent, s'adapte zone cliquable -->
+          <span class="carousel-control-prev-icon"></span> <!-- icon bootstrap -->
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselUMC" data-bs-slide="next"> <!-- flèche next suivant, s'adapte zone cliquable -->
+          <span class="carousel-control-next-icon"></span> <!-- icon bootstrap -->
+        </button>
+      </div>
+
+     <p class="text-muted small mb-3"> <!-- Texte explicative gris petit et espace -->
+       Le partenariat avec le lycée Maupertuis a permis à l’entreprise TRIDIMENSION de valider le modèle et la faisabilité technique de l’Unité Mobile de Compostage. 
+       Le procédé biologique a, lui aussi, été validé avec la production d’un compost de qualité. L’outil sert désormais de site pilote de projets solaires . 
+       Afin de rendre le module totalement autonome et de plus mobile, les étudiants de BTS Electrotechnique ont implanté sur le conteneur une unité de production photovoltaïque.
+      </p>
+
+      <div class="d-grid gap-2"> <!-- prend toute la largeur de la commande (d-grid), espace vertical (boutons ne se touchent pas) -->
+        <a href="Page-graphique.html" class="btn btn-success fw-semibold">Visualiser les graphiques</a> <!-- bouton vert, texte en gras -->
+        <a href="Page-téléchargement.html" class="btn btn-outline-success fw-semibold">Télécharger les données</a> <!-- bouton vert transparent, texte en gras -->
+      </div>
+    </div>
+
+    <!-- Colonne de droite -->
+    <div class="col-lg-8"> <!-- largeur de la colonne 8/12 -->
+
+      <!-- Objectifs du projet -->
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">Objectif du projet</h2> <!-- texte en gras vert, bordure verte en bas du titre, petit espace entre le texte et sa bordure (pb-2), espace sous la bordure pour ne pas coller au paragraphe (mb-3) -->
+      <p>
+        L'objectif principal est de permettre un suivi de la production et de la consommation
+        électrique de la plateforme UMC implantée dans un conteneur afin de valider sa rentabilité. Cette unité s'appuie sur
+        des panneaux solaires associés à un onduleur, un régulateur et des batteries pour rendre l'unité mobile
+        de compostage complètement autonome en énergie. Sur ce site, vous allez pouvoir observer et télécharger les données en temps réel et ponctuelles de l'onduleur et les batteries.
+      </p>
+
+
+      <!-- Partenaire -->
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3 mt-5">Partenaire industriel : TRIDIMENSION</h2> <!-- texte en gras vert, bordure verte en bas du titre, petit espace entre le texte et sa bordure (pb-2), espace sous la bordure pour ne pas coller au paragraphe (mb-5) -->
+      <div class="alert alert-success border-start border-success border-4 rounded-3"> <!--marge verte, commence vertical vers gauche, epaisseur -->
+        <p class="mb-2"> <!-- texte explicatif avec espace -->
+          TRIDIMENSION est une structure spécialisée dans l'ingénierie et les solutions innovantes
+          liées à la gestion des déchets et à l'économie circulaire. Située au
+          <em>3 impasse du Grand Jardin, 35400 Saint-Malo</em>, elle accompagne les collectivités
+          et entreprises dans leur transition écologique.
+        </p> <!-- balise em italique -->
+        <a href="https://tridimension.fr/" target="_blank" class="btn btn-success btn-sm">Visiter tridimension.fr ↗</a> <!-- lien cliquable, target ouvre dans une autre page, dans bouton vert plus petit -->
+      </div>
+
+      <!-- Technologies utilisées -->
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3 mt-4">Technologies utilisées</h2> <!-- texte en gras vert, bordure verte en bas du titre, petit espace entre le texte et sa bordure (pb-2), espace sous la bordure pour ne pas coller au paragraphe (mb-4) -->
+      <ul class="list-group list-group-flush"> <!-- enlève les puces par défaut et supprime les bordures exterieurs -->
+        <li class="list-group-item d-flex align-items-center gap-2"> <!-- bordures horizontales, aligner les elements (flexbox), permet de ne pas dépasser, espace automatique -->
+          <span class="badge bg-success rounded-pill">1</span> <!-- etiquette verte bord arrondi (rounded-pill) -->
+          <strong>Raspberry Pi</strong> Acquisition et centralisation des données dans une base de données locale (MariaDB)
+        </li> <!-- balise en gras (strong) -->
+        <li class="list-group-item d-flex align-items-center gap-2"> <!-- bordures horizontales, aligner les elements (flexbox), permet de ne pas dépasser, espace automatique -->
+          <span class="badge bg-success rounded-pill">2</span> <!-- etiquette verte bord arrondi (rounded-pill) -->
+          <strong>Maria DB locale</strong>Base de données locale 
+        </li> <!-- balise en gras (strong) -->
+        <li class="list-group-item d-flex align-items-center gap-2"> <!-- bordures horizontales, aligner les elements (flexbox), permet de ne pas dépasser, espace automatique -->
+          <span class="badge bg-success rounded-pill">3</span> <!-- etiquette verte bord arrondi (rounded-pill) -->
+          <strong>FTPS</strong>Copie des données vers OVH et transfert sécurisée (chiffré)
+        </li> <!-- balise en gras (strong) -->
+        <li class="list-group-item d-flex align-items-center gap-2"> <!-- bordures horizontales, aligner les elements (flexbox), permet de ne pas dépasser, espace automatique -->
+          <span class="badge bg-success rounded-pill">5</span> <!-- etiquette verte bord arrondi (rounded-pill) -->
+          <strong>VPS OVH</strong>Site Bootstrap + JS + Chart.js + Symfony + MariaDB distante
+        </li> <!-- balise en gras (strong) -->
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+<!-- Bas de page -->
+<footer class="bg-dark text-white pt-4 pb-3 mt-3"> <!-- fond gris/noir avec texte blanc, (Padding Top / Padding Bottom) ajoute de l'espace interne en haut et en bas -->
+  <div class="container"> <!-- aligne le contenu -->
+    <div class="row g-4"> <!-- prepare structure colonne avec espace -->
+      <div class="col-md-4"> <!-- prend 1/3 -->
+        <div class="fw-bold text-success mb-2">UMC - Unité Mobile de Compostage</div>  <!-- textes gras vert avec espacement -->
+        <p class="text-secondary small">  <!-- textes gris plus petit -->
+          Projet BTS CIEL mené en partenariat avec<br>
+          <a href="https://tridimension.fr/" target="_blank" class="text-success">TRIDIMENSION</a> - Saint-Malo
+        </p>
+      </div>
+      <div class="col-md-4"> <!-- 1/3 des ecrans (moyens et grands) et toute des petits -->
+        <div class="fw-bold text-success mb-2">Navigation</div>  <!-- textes gras vert avec espacement -->
+        <ul class="list-unstyled small text-secondary"> <!-- enleve les puces at aligne, texte gris et petit -->
+          <li><a href="Page-Accueil.html" class="text-secondary text-decoration-none">Accueil</a></li> <!-- Page accueil -->
+          <li><a href="Page-synoptique.html" class="text-secondary text-decoration-none">Synoptique</a></li> <!-- Page Synoptique-->
+          <li><a href="Page-graphique.html" class="text-secondary text-decoration-none">Graphiques</a></li> <!-- Page Graphiques -->
+          <li><a href="Page-téléchargement.html" class="text-secondary text-decoration-none">Téléchargement</a></li> <!-- Page Téléchargement-->
+        </ul>
+      </div>
+      <div class="col-md-4"> <!-- prend 1/3 -->
+        <div class="fw-bold text-success mb-2">Lycée Maupertuis</div> <!-- texte gras vert espace -->
+        <p class="text-secondary small"> <!-- texte gris plus petit -->
+          Projet réalisé dans le cadre du<br>
+          <strong class="text-white">BTS CIEL</strong> - Promotion 2024-2026<br> <!-- texte en gras (strong) -->
+          Saint-Malo, Bretagne
+        </p>
+      </div>
+    </div>
+    <hr class="border-secondary mt-3"> <!-- bordure grise avec espacement -->
+    <p class="text-center text-secondary mb-0 small">   <!-- texte petit gris avec espacement -->
+      © 2024-2026 UMC – Projet BTS CIEL - Lycée Maupertuis - En partenariat avec TRIDIMENSION
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
