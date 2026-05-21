@@ -1,0 +1,95 @@
+#include "ihm_locale.h"
+#include "QtSql/QSqlError"
+#include "QtSql/QSqlQuery"
+#include "QtSql/QSqlDatabase"
+#include "ui_ihm_locale.h"
+#include <QDebug>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QFile>
+
+IhmLocale::IhmLocale(QWidget *parent) : QMainWindow(parent), ui(new Ui::IhmLocale) {
+    ui->setupUi(this);
+    networkManager = new QNetworkAccessManager(this);
+    timerAcquisition = new QTimer(this);
+    connect(timerAcquisition, &QTimer::timeout, this, &IhmLocale::actualiserDonnees);
+}
+IhmLocale::~IhmLocale() { delete ui; }
+// CONFIGURATION DES PARAMÈTRES
+void IhmLocale::on_btnConnecter_clicked() {
+    dbLocale = QSqlDatabase::addDatabase("QSQLITE");
+    dbLocale.setHostName("localhost"); // BDD locale sur la raspberry
+    dbLocale.setDatabaseName("Energie");
+    dbLocale.setUserName("root");
+    dbLocale.setPassword("Energie1");
+    if (!dbLocale.open()) {
+        QMessageBox::critical(this, "Erreur BDD", dbLocale.lastError().text());
+        return;
+    }
+    // Définit la périodicité selon la saisie utilisateur (Cahier des charges)
+    int intervalle = ui->sbPeriode->value() * 1000;
+    timerAcquisition->start(intervalle);
+    QMessageBox::information(this, "Succès", "Système prêt et synchronisé.");
+
+}
+// Afficheurs LCD
+void IhmLocale::actualiserDonnees() {
+    QSqlQuery query("SELECT * FROM mesures ORDER BY horodatage DESC LIMIT 1",
+                    dbLocale);
+    if (query.next()) {
+        // Mise à jour des QLCDNumber (Ergonomie)
+        ui->lcdBatTension->display(query.value("bat_tension").toDouble());
+        ui->lcdBatCourant->display(query.value("bat_courant").toDouble());
+        ui->lcdAcOutTension->display(query.value("ac_out_tension").toDouble());
+        ui->lcdAcOutCourant->display(query.value("ac_out_courant").toDouble());
+        // Barre de progression SOC
+        int soc = query.value("soc").toInt();
+        ui->pbSOC->setValue(soc);
+        // Gestion du SEUIL D'ALARME (Mission Étudiant 2)
+        if (soc < ui->sbSeuilAlarme->value()) {
+            ui->lblStatus->setText("ALERTE : Énergie");
+            ui->lblStatus->setStyleSheet("background-color: red; color: white;");
+        } else {
+            ui->lblStatus->setText("Système OK");
+            ui->lblStatus->setStyleSheet("background-color: green; color: white;");
+        }
+    }
+}
+// RÉPLICATION : CSV
+void IhmLocale::genererFichierCSV() {
+    QFile file("/tmp/mesures.csv");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        QSqlQuery query("SELECT * FROM mesures WHERE synchro = 0", dbLocale);
+        while (query.next()) {
+            out << query.value("bat_tension").toString() << ";"
+                << query.value("bat_courant").toString() << ";"
+                << query.value("soc").toString() << ";"
+                << query.value("ac_out_courant").toString() << "\n";
+        }
+        file.close();
+    }
+}
+// RÉPLICATION : ENVOI FTPS Vers wamp server 192.168.1.35
+void IhmLocale::on_btnExportCSV_clicked() {
+    genererFichierCSV();
+    QUrl url("ftps://192.168.1.35:21/CAPTURES_CSV/mesures.csv");
+    url.setUserName("Admin");
+    url.setPassword("bonjour");
+    url.setPort(21);
+    QNetworkRequest request(url);
+    QFile *fileToSend = new QFile("/tmp/mesures.csv");
+    fileToSend->open(QIODevice::ReadOnly);
+    QNetworkReply *reply = networkManager->put(request, fileToSend);
+    connect(reply, &QNetworkReply::finished, [reply, fileToSend, this]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            ui->lblStatus->setText("Réplication réussie vers FTPS");
+            // synchronisé dans la BDD locale
+        } else {
+            QMessageBox::warning(this, "Erreur FTPS", reply->errorString());
+        }
+        fileToSend->close();
+        fileToSend->deleteLater();
+        reply->deleteLater();
+    });
+}
