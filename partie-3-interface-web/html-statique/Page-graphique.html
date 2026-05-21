@@ -1,1 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>UMC - Graphiques</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- affichage appareil mobile - meme largeur page web et écran - zoom initial  -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- pour utiliser classes bootstrap 5.3.3 pour style -  -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"> <!-- pour utiliser classes bootstrap 5.3.3 pour icons -  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> <!-- lien classes bootstrap 5.3.3 pour js intéractifs  -  -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>  <!-- bibliothèque Chart.js pour créer les graphiques en courbes -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script> <!-- adaptateur date pour Chart.js, permet d'afficher les axes temporels au format dd/MM HH:mm -->
+</head>
+<body class="bg-light"> <!-- fond clair toute la page -->
+ 
+<!-- Barre supérieure de la page -->
+<div class="bg-success bg-gradient text-white py-1 px-3 d-flex justify-content-between flex-wrap" style="font-size:0.8rem;"> <!-- fond vert lumineux (couleur tridimention) et texte blanc avec espace en haut et bas (=py-1) & gauche droite (=px-3) flexbox active aligne les éléments (d-flex) retour à la ligne (flex-wrap), font-size taille du texte  -->
+  <span>Saint-Malo &nbsp;|&nbsp; contact@tridimension.fr</span> <!-- texte plus petit a cause du style, barre + espace entre chaque -->
+  <span>Projet BTS CIEL - Lycée Maupertuis</span>
+</div>
+ 
+<!-- Affichage barre supérieure -->
+<div class="bg-white border-bottom border-success border-3 py-3"> <!-- Fond blanc, bordure en bas de couleur verte et épaisse avec espacement bas-haut -->
+  <div class="container d-flex align-items-center justify-content-between flex-wrap gap-3"> <!-- contenu centré, flexbox actif, align-items-center centre éléments vertical, flex wrap pour ecran mobile petit passe les éléments à la ligne-->
+    <div class="d-flex align-items-center gap-3 flex-wrap">
+        <!-- Logo de l'entreprise Tridimension -->
+      <a href="https://tridimension.fr/" target="_blank"> <!-- Lien cliquable site de l'entreprise Tridimention, target ouvre dans une autre page-->
+        <img src="img/Logo-tridimension-01.png.webp" alt="Logo Tridimension" style="height:60px; object-fit:contain;"> <!-- Image logo tridimension, hauteur et empeche déformation -->
+      </a>
+      <div class="vr mx-2" style="height:55px;"></div> <!-- séparateur vertical, vr ligne verticale, mx-2 marge horizontale-->
+      <a href="https://lyceemaupertuis.bzh/lenseignement-superieur/" target="_blank"> <!-- Lien cliquable site lycée Maupertuis, target ouvre dans une autre page-->
+        <img src="img/cropped-logo-maupertuis-lycee-591561990.png" alt="Logo Lycée Maupertuis" style="height:55px; object-fit:contain;"> <!-- Image logo lycée Maupertuis, hauteur et empeche déformation -->
+      </a>
+      <div class="vr mx-2" style="height:55px;"></div> <!-- séparateur vertical, vr ligne verticale, mx-2 marge horizontale-->
+      <!-- Titre du site : UMC - Unité Mobile de Compostage -->
+      <div>
+        <div class="fw-bold text-success fs-5 lh-1">UMC</div> <!-- Texte vert gras, police moyenne, texte collé -->
+        <div class="text-muted small">Unité Mobile de Compostage</div> <!-- Texte gris clair plus petit -->
+      </div>
+    </div>
+    <a href="https://lyceemaupertuis.bzh/lenseignement-superieur/" target="_blank" class="text-decoration-none"> <!-- Lien cliquable site de Maupertuis, target ouvre dans une autre page, text-decoration-none enlève le soulignement du lien-->
+      <span class="badge bg-success fs-6 px-3 py-2">BTS CIEL - 2024-2026</span> <!-- Badge vert, petite talle de texte, espace gauche droite et haut bas -->
+    </a>
+  </div>
+</div>
+ 
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-sm bg-success navbar-dark"> <!-- Barre de navigation bootstrap responsive sur fond vert avec texte clair -->
+  <div class="container-fluid"> <!-- prend largeur de écran et responsive -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUMC"> <!-- Bouton pour les petits écrans, data-bs-toggleactive ouverture/fermeture menu, data-bs-target cible élément à ouvrir   -->
+      <span class="navbar-toggler-icon"></span> <!-- affiche icone hamburger (trois traits verticaux) -->
+    </button>
+    <div class="collapse navbar-collapse" id="navbarUMC"> <!-- collapse permet de cacher le menu sur mobile -->
+      <ul class="navbar-nav"> <!-- liste de navigation -->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-Accueil.html">Accueil</a></li> <!-- Page accueil -->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-synoptique.html">Synoptique</a></li> <!-- Page synoptique, fw-semibold texte gras leger -->
+        <li class="nav-item"><a class="nav-link fw-semibold active" href="Page-graphique.html">Graphiques</a></li> <!-- Page graphiques, page active -->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-téléchargement.html">Téléchargement</a></li> <!-- Page téléchargement-->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-contacts.html">Contacts</a></li> <!-- Page contacts -->
+        <li class="nav-item"><a class="nav-link fw-semibold" href="Page-Ressources.html">Ressources</a></li> <!-- Page ressources -->
+      </ul>
+    </div>
+  </div>
+</nav>
+ 
+<!-- Présentation -->
+<div class="bg-success bg-gradient text-white py-4"> <!-- fond vert, dégradé, texte gris, espace haut bas -->
+  <div class="container d-flex align-items-center flex-wrap gap-3"> <!-- centre le contenu, flexbox, retour à la ligne, espace entre éléments -->
+    <div>
+       <h1 class="fw-bold display-6">Graphiques</h1> <!-- titre principal gras et grand de taille -->
+      <p class="lead opacity-75 mb-0">Visualisation des données de production solaire et électrique de l'UMC</p> <!-- sous-titre plus grand (lead), légèrement transparent, collé en bas -->
+    </div>
+    <div class="ms-auto"> <!-- pousse l'élément à droite (ms-auto = margin-start auto) -->
+      <span id="statut-connexion" class="badge bg-warning text-dark fs-6 px-3 py-2"> <!-- badge jaune (warning), texte sombre, id pour être modifié par le JavaScript -->
+        <i class="bi bi-clock-history me-1"></i> Données de démonstration
+      </span> <!-- icone horloge bootstrap, espace à droite -->
+    </div>
+  </div>
+</div>
+ 
+<!-- Filtres -->
+<div class="bg-white border-bottom py-3"> <!-- fond blanc, bordure en bas, espace haut bas -->
+  <div class="container"> <!-- aligne le contenu -->
+    <div class="row g-3 align-items-end"> <!-- grille, espace entre éléments (g-3), aligne les éléments en bas (align-items-end) -->
+        <!-- Filtre : boutons de période -->
+      <div class="col-sm-auto"><!-- largeur automatique selon le contenu -->
+        <label class="form-label fw-semibold text-success small mb-1">Période</label> <!-- label vert petit gras, espace en bas -->
+        <div class="btn-group" id="btnPeriode"> <!-- groupe de boutons bootstrap collés ensemble, id pour le JavaScript -->
+          <button type="button" class="btn btn-outline-success btn-sm" data-periode="1h">1h</button> <!-- bouton vert contour, petit, data-periode utilisé par le JavaScript -->
+          <button type="button" class="btn btn-outline-success btn-sm" data-periode="6h">6h</button>
+          <button type="button" class="btn btn-outline-success btn-sm active" data-periode="24h">24h</button>  <!-- active = bouton sélectionné par défaut (fond vert) -->
+          <button type="button" class="btn btn-outline-success btn-sm" data-periode="7j">7 jours</button>
+          <button type="button" class="btn btn-outline-success btn-sm" data-periode="30j">30 jours</button>
+        </div>
+      </div>
+      <!-- Filtre : date de début -->
+      <div class="col-sm-auto">
+        <label class="form-label fw-semibold text-success small mb-1">Date début</label> <!-- texte petit gras, espacement -->
+        <input type="datetime-local" id="dateDebut" class="form-control form-control-sm" style="width:190px;">
+      </div> <!-- champ date+heure, form-control-sm = taille réduite, largeur fixe -->
+       <!-- Filtre : date de fin -->
+      <div class="col-sm-auto">
+        <label class="form-label fw-semibold text-success small mb-1">Date fin</label>
+        <input type="datetime-local" id="dateFin" class="form-control form-control-sm" style="width:190px;">
+      </div>
+       <!-- Bouton Filtrer -->
+      <div class="col-sm-auto">
+        <button class="btn btn-success btn-sm" id="btnFiltrer"> <!-- bouton vert petit, id pour le JavaScript -->
+          <i class="bi bi-funnel-fill me-1"></i>Filtrer <!-- icone entonnoir bootstrap -->
+        </button>
+      </div>
+       <!-- Switch : mode temps réel --> 
+      <div class="col-sm-auto ms-auto"> <!-- ms-auto pousse le switch à droite -->
+        <div class="form-check form-switch mb-0 d-flex align-items-center gap-2"> <!-- interrupteur bootstrap (form-switch), pas d'espace en bas (mb-0), flexbox, centré, espace entre les éléments -->
+          <input class="form-check-input" type="checkbox" id="tempsReel" style="width:2.5em;height:1.3em;"> <!-- interrupteur (toggle), dimensions agrandies pour mieux le voir -->
+          <label class="form-check-label fw-semibold text-success" for="tempsReel"> <!-- label lié au switch (for=id) -->
+            <i class="bi bi-arrow-repeat me-1"></i>Temps réel (30s)
+          </label> <!-- icone rotation bootstrap -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Cartes résumé (4 valeurs clés de la dernière mesure) -->
+<div class="container mt-4"> <!-- espace en haut (mt-4) -->
+  <div class="row g-3 mb-4"> <!-- grille, espace entre cartes (g-3), espace en bas (mb-4) -->
+    <div class="col-6 col-md-3"> <!-- largeur 6/12 sur mobile (2 par ligne), 3/12 sur écran moyen (4 par ligne) -->
+      <div class="card border-success border-2 text-center py-2"> <!-- carte avec bordure verte épaisse, texte centré, espace vertical -->
+        <div class="card-body p-2"> <!-- corps de la carte, petit espace interne -->
+          <div class="text-muted small mb-1"><i class="bi bi-lightning-charge text-success me-1"></i>Tension AC sortie</div> <!-- icone éclair vert bootstrap -->
+          <div class="fw-bold text-success fs-4" id="stat-ac-out-v">—</div> <!-- valeur en gras vert grande taille, id mis à jour par le JavaScript, "—" affiché si pas de données -->
+          <div class="text-muted small">Volt (V)</div>  <!-- unité en gris petit -->
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3"> <!-- largeur 6/12 sur mobile (2 par ligne), 3/12 sur écran moyen (4 par ligne) -->
+      <div class="card border-success border-2 text-center py-2"> <!-- carte avec bordure verte épaisse, texte centré, espace vertical -->
+        <div class="card-body p-2"> <!-- corps de la carte, petit espace interne -->
+          <div class="text-muted small mb-1"><i class="bi bi-battery-half text-success me-1"></i>Tension batterie</div> <!-- icone batterie demi-pleine bootstrap -->
+          <div class="fw-bold text-success fs-4" id="stat-bat-v">—</div> <!-- SoC = State of Charge = niveau de charge de la batterie -->
+          <div class="text-muted small">Volt (V)</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3"> <!-- largeur 6/12 sur mobile (2 par ligne), 3/12 sur écran moyen (4 par ligne) -->
+      <div class="card border-success border-2 text-center py-2"> <!-- carte avec bordure verte épaisse, texte centré, espace vertical -->
+        <div class="card-body p-2"> <!-- corps de la carte, petit espace interne -->
+          <div class="text-muted small mb-1"><i class="bi bi-percent text-success me-1"></i>État de charge</div> <!-- icone % bootstrap -->
+          <div class="fw-bold text-success fs-4" id="stat-soc">—</div> 
+          <div class="text-muted small">SoC (%)</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3"> <!-- largeur 6/12 sur mobile (2 par ligne), 3/12 sur écran moyen (4 par ligne) -->
+      <div class="card border-danger border-2 text-center py-2"> <!-- carte avec bordure rouge épaisse, texte centré, espace vertical -->
+        <div class="card-body p-2"> <!-- corps de la carte, petit espace interne -->
+          <div class="text-muted small mb-1"><i class="bi bi-thermometer-half text-danger me-1"></i>Température batterie</div> <!-- icone thermomètre rouge bootstrap -->
+          <div class="fw-bold text-danger fs-4" id="stat-bat-temp">—</div> <!-- valeur rouge, id mis à jour par le JavaScript -->
+          <div class="text-muted small">°C</div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+   
+  <!-- Section Onduleur -->
+  <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+    <i class="bi bi-cpu me-2"></i>Onduleur <!-- icone processeur bootstrap -->
+    <span class="badge bg-success ms-2 small">mesure_onduleur</span> <!-- badge indiquant la table MariaDB source des données -->
+  </h2>
+  <div class="row g-4 mb-4"> <!-- grille, grand espace entre les graphiques (g-4), espace en bas (mb-4) -->
+ 
+    <!-- Graphique 1 : Tensions AC Entrée & Sortie -->
+    <div class="col-lg-6"> <!-- largeur 6/12 sur grand écran (2 graphiques par ligne) -->
+      <div class="card border-start border-success border-4 shadow-sm h-100"> <!-- carte avec bordure verte à gauche épaisse, ombre légère, hauteur égale -->
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle"> <!-- en-tête blanc, texte vert gras, bordure verte claire en bas -->
+          <i class="bi bi-graph-up me-1"></i>Tensions AC - Entrée &amp; Sortie <!-- icone graphique bootstrap, &amp; = & en HTML -->
+          <span class="badge bg-success-subtle text-success ms-1 small">ac_in_v / ac_out_v</span> <!-- badge indiquant les colonnes SQL utilisées -->
+        </div>
+        <div class="card-body">
+          <canvas id="chartOndTensions" style="max-height:260px;"></canvas> <!-- canvas = zone de dessin HTML5 utilisée par Chart.js, id pour cibler dans le JavaScript, hauteur max limitée -->
+          <div class="d-flex gap-2 mt-3 flex-wrap"> <!-- flexbox, espace entre badges, espace en haut (mt-3), retour à la ligne -->
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6"> <!-- badge avec fond vert clair, bordure verte, coins arrondis, espace interne -->
+              <span id="v-ac-in" class="fw-bold">—</span> V <span class="fw-normal opacity-75">AC Entrée</span> <!-- valeur mise à jour par JS, unité, label transparent -->
+            </span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span id="v-ac-out" class="fw-bold">—</span> V <span class="fw-normal opacity-75">AC Sortie</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Graphique 2 : Courants AC Entrée & Sortie -->
+    <div class="col-lg-6">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          <i class="bi bi-graph-up me-1"></i>Courants AC — Entrée &amp; Sortie
+          <span class="badge bg-success-subtle text-success ms-1 small">ac_in_a / ac_out_a</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartOndCourants" style="max-height:260px;"></canvas>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span id="a-ac-in" class="fw-bold">—</span> A <span class="fw-normal opacity-75">AC Entrée</span>
+            </span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span id="a-ac-out" class="fw-bold">—</span> A <span class="fw-normal opacity-75">AC Sortie</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Graphique 3 : Batterie Tension & Courant (double axe Y) -->
+    <div class="col-lg-6">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          <i class="bi bi-battery-charging me-1"></i>Batterie — Tension &amp; Courant <!-- icone batterie en charge bootstrap -->
+          <span class="badge bg-success-subtle text-success ms-1 small">bat_v / bat_a</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartBat" style="max-height:260px;"></canvas> <!-- graphique avec double axe Y : V à gauche, A à droite -->
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span id="v-bat" class="fw-bold">—</span> V <span class="fw-normal opacity-75">Tension</span>
+            </span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span id="a-bat" class="fw-bold">—</span> A <span class="fw-normal opacity-75">Courant</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Graphique 4 : Température batterie (bordure rouge = colonne bat_temp pas encore dans la BDD) -->
+    <div class="col-lg-6">
+      <div class="card border-start border-danger border-4 shadow-sm h-100"> <!-- bordure rouge à gauche pour signaler que cette colonne est à ajouter -->
+        <div class="card-header bg-white fw-semibold text-danger border-bottom border-danger-subtle">
+          <i class="bi bi-thermometer-half me-1"></i>Température batterie (°C)
+          <span class="badge bg-danger-subtle text-danger ms-1 small">bat_temp</span>
+          <span class="badge bg-secondary ms-1 small">⚠ Colonne à ajouter en BDD</span> <!-- badge gris avertissement : colonne bat_temp à créer avec ALTER TABLE -->
+        </div>
+        <div class="card-body">
+          <canvas id="chartTemp" style="max-height:260px;"></canvas>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-3 px-3 py-2 fs-6">
+              <span id="v-bat-temp" class="fw-bold">—</span> °C <span class="fw-normal opacity-75">Température actuelle</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Graphique 5 : État de charge SoC (0 à 100%) -->
+    <div class="col-lg-6">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          <i class="bi bi-speedometer2 me-1"></i>État de charge (SoC) <!-- icone compteur vitesse bootstrap, SoC = State of Charge -->
+          <span class="badge bg-success-subtle text-success ms-1 small">soc</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartSoc" style="max-height:260px;"></canvas> <!-- graphique avec axe Y fixé entre 0 et 100% -->
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span id="v-soc" class="fw-bold">—</span> % <span class="fw-normal opacity-75">SoC actuel</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <!-- Section Puissance & Rentabilité -->
+  <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+    <i class="bi bi-calculator me-2"></i>Puissance &amp; Rentabilité estimée <!-- icone calculatrice bootstrap -->
+  </h2>
+  <div class="row g-4 mb-5"> <!-- grille, espace entre éléments (g-4), grand espace en bas (mb-5) -->
+ 
+    <!-- Graphique 6 : Puissance calculée P = U × I -->
+    <div class="col-lg-8"> <!-- largeur 8/12 sur grand écran -->
+      <div class="card border-start border-success border-4 shadow-sm">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          <i class="bi bi-lightning-fill me-1"></i>Puissance AC entrée / sortie (W)
+          <span class="badge bg-success-subtle text-success ms-1 small">U × I = P</span> <!-- formule de la puissance électrique -->
+        </div>
+        <div class="card-body">
+          <canvas id="chartPuissance" style="max-height:260px;"></canvas> <!-- puissance calculée côté JavaScript : ac_out_v × ac_out_a -->
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Tableau résumé de la période -->
+    <div class="col-lg-4"> <!-- largeur 4/12 sur grand écran -->
+      <div class="card border-success border-2 h-100"> <!-- carte avec bordure verte épaisse, hauteur égale -->
+        <div class="card-header bg-success text-white fw-semibold"> <!-- en-tête vert plein, texte blanc gras -->
+          <i class="bi bi-clipboard-data me-1"></i>Résumé période <!-- icone presse-papier bootstrap -->
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush"> <!-- liste sans bordures extérieures (flush) -->
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0"> <!-- item liste, flexbox pour aligner label et badge, pas d'espace horizontal (px-0) -->
+              Puissance max. sortie <span class="badge bg-success rounded-pill" id="sum-p-max">— W</span> <!-- badge arrondi (rounded-pill), id mis à jour par le JavaScript -->
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Puissance moy. sortie <span class="badge bg-success rounded-pill" id="sum-p-moy">— W</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Temp. max. batterie <span class="badge bg-danger rounded-pill" id="sum-temp-max">— °C</span> <!-- badge rouge pour la température -->
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              SoC min. batterie <span class="badge bg-warning text-dark rounded-pill" id="sum-soc-min">— %</span> <!-- badge jaune pour le minimum de charge, text-dark pour lisibilité -->
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Nb mesures <span class="badge bg-secondary rounded-pill" id="sum-nb">—</span> <!-- badge gris pour le nombre de points de données -->
+            </li>
+          </ul>
+          <div class="alert alert-success mt-3 p-2 small mb-0"> <!-- alerte verte, espace en haut (mt-3), petit espace interne (p-2), petite taille de texte, collée en bas -->
+            <i class="bi bi-info-circle me-1"></i>Énergie (Wh) = intégration des puissances sur la période. <!-- icone information bootstrap -->
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+<!-- Bas de page -->
+<footer class="bg-dark text-white pt-4 pb-3 mt-3"> <!-- fond gris/noir avec texte blanc, (Padding Top / Padding Bottom) ajoute de l'espace interne en haut et en bas -->
+  <div class="container"> <!-- aligne le contenu -->
+    <div class="row g-4"> <!-- prepare structure colonne avec espace -->
+      <div class="col-md-4"> <!-- prend 1/3 -->
+        <div class="fw-bold text-success mb-2">UMC - Unité Mobile de Compostage</div> <!-- textes gras vert avec espacement -->
+        <p class="text-secondary small">Projet BTS CIEL mené en partenariat avec<br>
+          <a href="https://tridimension.fr/" target="_blank" class="text-success">TRIDIMENSION</a> - Saint-Malo</p>
+      </div>
+      <div class="col-md-4"> <!-- 1/3 des ecrans (moyens et grands) et toute des petits -->
+        <div class="fw-bold text-success mb-2">Navigation</div> <!-- textes gras vert avec espacement -->
+        <ul class="list-unstyled small text-secondary"> <!-- enleve les puces et aligne, texte gris et petit -->
+          <li><a href="Page-Accueil.html" class="text-secondary text-decoration-none">Accueil</a></li> <!-- Page accueil -->
+          <li><a href="Page-synoptique.html" class="text-secondary text-decoration-none">Synoptique</a></li> <!-- Page synoptique -->
+          <li><a href="Page-graphique.html" class="text-secondary text-decoration-none">Graphiques</a></li> <!-- Page graphiques -->
+          <li><a href="Page-téléchargement.html" class="text-secondary text-decoration-none">Téléchargement</a></li> <!-- Page téléchargement -->
+        </ul>
+      </div>
+      <div class="col-md-4"> <!-- prend 1/3 -->
+        <div class="fw-bold text-success mb-2">Lycée Maupertuis</div> <!-- texte gras vert espace -->
+        <p class="text-secondary small">Projet réalisé dans le cadre du<br> <!-- texte gris plus petit -->
+          <strong class="text-white">BTS CIEL</strong> - Promotion 2024-2026<br>Saint-Malo, Bretagne</p> <!-- texte en gras (strong) -->
+      </div>
+    </div>
+    <hr class="border-secondary mt-3"> <!-- bordure grise avec espacement -->
+    <p class="text-center text-secondary mb-0 small"> <!-- texte petit gris avec espacement -->
+      © 2024-2026 UMC – Projet BTS CIEL - Lycée Maupertuis - En partenariat avec TRIDIMENSION
+    </p>
+  </div>
+</footer>
+ 
+<script>
+// Configuration globale de Chart.js (police, taille, couleur par défaut)
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif"; // police de tous les graphiques
+Chart.defaults.font.size = 11; // taille de police par défaut
+Chart.defaults.color = '#6c757d'; // couleur du texte des axes (gris)
+ 
+// Couleurs des courbes de chaque graphique
+const C = {
+  acInV:'#0d6efd',  // bleu - AC entrée tension
+  acOutV:'#198754', // vert - AC sortie tension
+  acInA:'#6f42c1',  // violet - AC entrée courant
+  acOutA:'#20c997', // cyan - AC sortie courant
+  batV:'#fd7e14',   // orange - batterie tension
+  batA:'#dc3545',   // rouge - batterie courant
+  temp:'#dc3545',   // rouge -  température batterie
+  soc:'#198754',    // vert - état de charge
+  pInW:'#0d6efd',   // bleu - puissance entrée
+  pOutW:'#198754',  // vert - puissance sortie
+};
+ 
+// Génère des données de démonstration fictives (mais possibles)
+// n = nombre de points, base = valeur centrale, amp = amplitude de variation
+function demo(n, base, amp) {
+  // n    = nombre de points à générer (ex: 24 pour 24 heures)
+  // base = valeur centrale autour de laquelle varie la courbe (ex: 230 pour ~230V)
+  // amp  = amplitude de variation (ex: 4 signifie ±4 autour de base)
 
+  const now = new Date();
+  // ^ Date et heure actuelles, point de départ du calcul des horodatages
+
+  return Array.from({length: n}, (_, i) => ({
+    // Array.from crée un tableau de n éléments
+    // Le paramètre _ est ignoré (convention JS), i est l'index (0, 1, 2...)
+
+    x: new Date(now - (n - i) * 3600000),
+    // ^ Horodatage fictif :
+    //   - (n - i) compte à rebours depuis n jusqu'à 0
+    //   - * 3600000 = nombre de millisecondes dans 1 heure (60 × 60 × 1000)
+    //   - Résultat : i=0 → il y a n heures, i=n-1 → il y a 1 heure, i=n → maintenant
+
+    y: +(base + (Math.random() - 0.5) * amp * 2).toFixed(2)
+    // ^ Valeur fictive calculée :
+    //   - Math.random() génère un nombre entre 0 et 1
+    //   - Math.random() - 0.5 donne un nombre entre -0.5 et +0.5
+    //   - * amp * 2 étend la variation (ex: amp=4 → variation entre -4 et +4)
+    //   - + base recentre autour de la valeur de base
+    //   - .toFixed(2) arrondit à 2 décimales (ex: 231.47)
+    //   - Le + devant convertit la chaîne en nombre
+  }));
+}
+ 
+// CRÉATION DES 24 POINTS DE DONNÉES DE DÉMONSTRATION
+// N = 24 points = 24 heures (1 mesure par heure)
+
+
+const N = 24;
+
+// --- Onduleur ---
+const dAcInV  = demo(N, 230, 4);
+// ^ Tension AC Entrée : ~230V secteur, variation ±4V → entre 222V et 238V
+
+const dAcOutV = demo(N, 228, 3);
+// ^ Tension AC Sortie : légèrement inférieure à l'entrée (pertes onduleur)
+
+const dAcInA  = demo(N, 2.1, 0.8);
+// ^ Courant AC Entrée : ~2.1A, variation ±0.8A
+
+const dAcOutA = demo(N, 1.9, 0.7);
+// ^ Courant AC Sortie : légèrement inférieur à l'entrée (rendement ~90%)
+
+// --- Batterie ---
+const dBatV = demo(N, 48.5, 2.5);
+// ^ Tension batterie : ~48.5V (batterie 48V bien chargée), variation ±2.5V
+
+const dBatA = demo(N, 5.2, 3);
+// ^ Courant batterie : ~5.2A, variation ±3A
+//   (positif = charge batterie, négatif possible = décharge)
+
+// --- Température batterie ---
+const dTemp = demo(N, 28, 6).map(d => ({
+  x: d.x,
+  y: Math.max(0, d.y)
+  // Math.max(0, d.y) bloque la valeur à 0 minimum
+  // → une température ne peut pas être négative dans ce contexte
+}));
+// ^ ~28°C, variation ±6°C → entre 22°C et 34°C
+
+// --- État de charge SoC ---
+const dSoc = demo(N, 72, 12).map(d => ({
+  x: d.x,
+  y: Math.min(100, Math.max(0, d.y))
+  // Math.max(0, d.y)  → minimum 0% (batterie vide)
+  // Math.min(100, ...) → maximum 100% (batterie pleine)
+  // Les deux ensemble garantissent que le SoC reste entre 0 et 100
+}));
+// ^ SoC moyen ~72%, variation ±12% → entre 60% et 84%
+
+// --- Puissance calculée (P = U × I) ---
+const dPIn = dAcInV.map((d, i) => ({
+  x: d.x,
+  y: +(d.y * dAcInA[i].y).toFixed(1)
+  // d.y = tension AC entrée à l'index i
+  // dAcInA[i].y = courant AC entrée au même index i
+  // d.y * dAcInA[i].y = puissance en Watts (P = U × I)
+  // .toFixed(1) arrondit à 1 décimale
+  // + devant convertit en nombre
+}));
+// ^ Puissance Entrée : ~230V × ~2.1A ≈ ~483W
+
+const dPOut = dAcOutV.map((d, i) => ({
+  x: d.x,
+  y: +(d.y * dAcOutA[i].y).toFixed(1)
+  // Même calcul mais pour la sortie de l'onduleur
+}));
+// ^ Puissance Sortie : ~228V × ~1.9A ≈ ~433W
+//   La différence avec l'entrée = pertes de l'onduleur (~10%)
+
+ 
+// Options communes pour les graphiques à axe Y simple
+function tOpts(lbl) {
+  return {
+    responsive:true, maintainAspectRatio:true, // graphique responsive qui garde ses proportions
+    interaction:{mode:'index', intersect:false}, // affiche tous les tooltips au survol d'une ligne verticale
+    plugins:{legend:{position:'top', labels:{boxWidth:12, padding:10}}}, // légende en haut, petits carrés de couleur
+    scales:{
+      x:{type:'time', time:{tooltipFormat:'dd/MM HH:mm', displayFormats:{hour:'HH:mm', day:'dd/MM'}}, grid:{color:'#f0f0f0'}, ticks:{maxTicksLimit:8}}, // axe X temporel, grille gris clair, max 8 graduations
+      y:{title:{display:true, text:lbl}, grid:{color:'#f0f0f0'}} // axe Y avec titre et grille gris clair
+    }
+  };
+}
+ 
+// Options pour les graphiques à double axe Y (Volts à gauche, Ampères à droite)
+function dOpts(lL, lR) {
+  return {
+    responsive:true, maintainAspectRatio:true,
+    interaction:{mode:'index', intersect:false},
+    plugins:{legend:{position:'top', labels:{boxWidth:12, padding:10}}},
+    scales:{
+      x:{type:'time', time:{tooltipFormat:'dd/MM HH:mm', displayFormats:{hour:'HH:mm'}}, grid:{color:'#f0f0f0'}, ticks:{maxTicksLimit:8}},
+      yL:{type:'linear', position:'left',  title:{display:true, text:lL}, grid:{color:'#f0f0f0'}}, // axe gauche : Volts
+      yR:{type:'linear', position:'right', title:{display:true, text:lR}, grid:{drawOnChartArea:false}} // axe droit : Ampères, pas de grille pour éviter doublon
+    }
+  };
+}
+ 
+// Création des graphiques avec Chart.js
+new Chart('chartOndTensions',{type:'line', data:{datasets:[
+  {label:'AC Entrée (V)', data:dAcInV,  borderColor:C.acInV,  backgroundColor:C.acInV+'22',  tension:.4, pointRadius:2, fill:true}, // tension:.4 = courbe lissée, fill colorie sous la courbe avec transparence (22 = hex 14%)
+  {label:'AC Sortie (V)', data:dAcOutV, borderColor:C.acOutV, backgroundColor:C.acOutV+'22', tension:.4, pointRadius:2, fill:true}
+]}, options:tOpts('Tension (V)')});
+ 
+new Chart('chartOndCourants',{type:'line', data:{datasets:[
+  {label:'AC Entrée (A)', data:dAcInA,  borderColor:C.acInA,  backgroundColor:C.acInA+'22',  tension:.4, pointRadius:2, fill:true},
+  {label:'AC Sortie (A)', data:dAcOutA, borderColor:C.acOutA, backgroundColor:C.acOutA+'22', tension:.4, pointRadius:2, fill:true}
+]}, options:tOpts('Courant (A)')});
+ 
+new Chart('chartBat',{type:'line', data:{datasets:[
+  {label:'Tension (V)', data:dBatV, borderColor:C.batV, backgroundColor:C.batV+'22', tension:.4, pointRadius:2, yAxisID:'yL'}, // yAxisID lie la courbe à l'axe gauche
+  {label:'Courant (A)', data:dBatA, borderColor:C.batA, backgroundColor:C.batA+'22', tension:.4, pointRadius:2, yAxisID:'yR'}  // yAxisID lie la courbe à l'axe droit
+]}, options:dOpts('Tension (V)', 'Courant (A)')});
+ 
+new Chart('chartTemp',{type:'line', data:{datasets:[
+  {label:'Température (°C)', data:dTemp, borderColor:C.temp, backgroundColor:C.temp+'22', tension:.4, pointRadius:2, fill:true}
+]}, options:tOpts('Température (°C)')});
+ 
+new Chart('chartSoc',{type:'line', data:{datasets:[
+  {label:'SoC (%)', data:dSoc, borderColor:C.soc, backgroundColor:C.soc+'33', tension:.4, pointRadius:2, fill:true} // fond plus opaque (33 = hex 20%) pour mieux voir le niveau de charge
+]}, options:{responsive:true, maintainAspectRatio:true, interaction:{mode:'index', intersect:false},
+  plugins:{legend:{position:'top', labels:{boxWidth:12, padding:10}}},
+  scales:{
+    x:{type:'time', time:{tooltipFormat:'dd/MM HH:mm', displayFormats:{hour:'HH:mm'}}, grid:{color:'#f0f0f0'}, ticks:{maxTicksLimit:8}},
+    y:{min:0, max:100, title:{display:true, text:'SoC (%)'}, grid:{color:'#f0f0f0'}} // axe Y bloqué entre 0 et 100% car c'est une jauge
+  }
+}});
+ 
+new Chart('chartPuissance',{type:'line', data:{datasets:[
+  {label:'Puissance entrée (W)',  data:dPIn,  borderColor:C.pInW,  backgroundColor:C.pInW+'22',  tension:.4, pointRadius:2, fill:true},
+  {label:'Puissance sortie (W)', data:dPOut, borderColor:C.pOutW, backgroundColor:C.pOutW+'22', tension:.4, pointRadius:2, fill:true}
+]}, options:tOpts('Puissance (W)')});
+ 
+// Mise à jour des cartes résumé avec la dernière valeur de chaque série
+const lv = a => a[a.length-1]?.y ?? '—'; // prend la dernière valeur du tableau, ou '—' si vide (opérateur ?.)
+document.getElementById('stat-ac-out-v').textContent  = lv(dAcOutV)+' V';
+document.getElementById('stat-bat-v').textContent     = lv(dBatV)+' V';
+document.getElementById('stat-soc').textContent       = lv(dSoc)+' %';
+document.getElementById('stat-bat-temp').textContent  = lv(dTemp)+' °C';
+document.getElementById('v-ac-in').textContent        = lv(dAcInV);
+document.getElementById('v-ac-out').textContent       = lv(dAcOutV);
+document.getElementById('a-ac-in').textContent        = lv(dAcInA);
+document.getElementById('a-ac-out').textContent       = lv(dAcOutA);
+document.getElementById('v-bat').textContent          = lv(dBatV);
+document.getElementById('a-bat').textContent          = lv(dBatA);
+document.getElementById('v-bat-temp').textContent     = lv(dTemp);
+document.getElementById('v-soc').textContent          = lv(dSoc);
+ 
+// Calcul des statistiques de période dans le tableau résumé
+const ps = dPOut.map(d=>d.y); // extrait toutes les puissances de sortie
+document.getElementById('sum-p-max').textContent   = Math.max(...ps).toFixed(1)+' W'; // puissance maximale, spread operator (...) pour passer le tableau à Math.max
+document.getElementById('sum-p-moy').textContent   = (ps.reduce((a,b)=>a+b)/ps.length).toFixed(1)+' W'; // moyenne = somme / nombre de valeurs
+document.getElementById('sum-temp-max').textContent= Math.max(...dTemp.map(d=>d.y)).toFixed(1)+' °C';
+document.getElementById('sum-soc-min').textContent = Math.min(...dSoc.map(d=>d.y)).toFixed(0)+' %';
+document.getElementById('sum-nb').textContent      = N; // nombre total de mesures
+ 
+// Gestion des boutons de période (changer le bouton actif)
+document.querySelectorAll('#btnPeriode button').forEach(b => {
+  b.addEventListener('click', function() { // addEventListener ajoute un écouteur d'événement sur le clic
+    document.querySelectorAll('#btnPeriode button').forEach(x => x.classList.remove('active')); // enlève active de tous les boutons
+    this.classList.add('active'); // ajoute active au bouton cliqué (this = l'élément cliqué)
+  });
+});
+ 
+// Gestion du switch temps réel
+let iv = null; // variable pour stocker l'identifiant de l'intervalle (null = inactif)
+document.getElementById('tempsReel').addEventListener('change', function() {
+  const badge = document.getElementById('statut-connexion');
+  if (this.checked) { // si le switch est activé (coché)
+    badge.className = 'badge bg-success fs-6 px-3 py-2'; // passe le badge en vert
+    badge.innerHTML = '<i class="bi bi-circle-fill me-1"></i> Temps réel actif';
+    iv = setInterval(() => console.log('actualisation...'), 30000); // déclenche une action toutes les 30 secondes (30000 ms)
+  } else { // si le switch est désactivé
+    clearInterval(iv); // annule l'intervalle
+    badge.className = 'badge bg-warning text-dark fs-6 px-3 py-2'; // repasse le badge en jaune
+    badge.innerHTML = '<i class="bi bi-clock-history me-1"></i> Données de démonstration';
+  }
+});
+ 
+// Initialisation des champs date (24h par défaut)
+const now = new Date();
+document.getElementById('dateFin').value   = now.toISOString().slice(0,16); // date/heure actuelle au format YYYY-MM-DDTHH:mm
+document.getElementById('dateDebut').value = new Date(now-86400000).toISOString().slice(0,16); // il y a 24h (86400000 ms = 24h)
+</script>
+</body>
+</html>
