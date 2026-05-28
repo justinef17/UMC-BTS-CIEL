@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Export UMC</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 10px; }
+    h1 { color: #198754; font-size: 14px; }
+    .info { color: #6c757d; font-size: 9px; margin-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th { background: #198754; color: white; padding: 4px 6px; text-align: left; }
+    td { padding: 3px 6px; border-bottom: 1px solid #dee2e6; }
+    tr:nth-child(even) td { background: #f0faf4; }
+  </style>
+</head>
+<body>
+  <h1>UMC - Unité Mobile de Compostage</h1>
+  <div class="info">
+    Source : {{ source }} &nbsp;|&nbsp; {{ debut }} → {{ fin }} &nbsp;|&nbsp; Généré le {{ "now"|date("d/m/Y H:i") }}
+  </div>
+  <table>
+    <thead>
+      <tr>{% for col in colonnes %}<th>{{ col }}</th>{% endfor %}</tr>
+    </thead>
+    <tbody>
+      {% for ligne in donnees %}
+        <tr>{% for col in colonnes %}<td>{{ ligne[col] ?? '—' }}</td>{% endfor %}</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

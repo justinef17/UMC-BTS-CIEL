@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - UMC{% endblock %}
+
+{% block body %}
+
+  {# Bandeau présentation #}
+  <div class="bg-success bg-gradient text-white py-5">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-7">
+          <h1 class="fw-bold display-6">Suivi en temps réel de l'Unité Mobile de Compostage (UMC)</h1>
+          <p class="lead mt-3 opacity-75">
+            Plateforme pour superviser la production et consommation
+            électrique solaire de l'UMC, en partenariat avec TRIDIMENSION.
+          </p>
+          <div class="d-flex gap-3 flex-wrap mt-4">
+            <a href="{{ path('app_graphiques') }}" class="btn btn-light text-success fw-semibold">Visualisation des graphiques</a>
+            <a href="{{ path('app_telechargement') }}" class="btn btn-outline-light fw-semibold">Télécharger les données</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# Contenu principal #}
+  <div class="container my-5">
+    <div class="row g-5">
+
+      {# Colonne gauche #}
+      <div class="col-lg-4">
+        <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">Historique de l'UMC :</h2>
+        <p class="text-muted small mb-3">
+          Depuis juin 2020, la société TRIDIMENSION a installé gracieusement dans l'enceinte du lycée Maupertuis
+          une Unité Mobile de Compostage unique en France. La convention établie entre le lycée et Tridimension
+          assure un partenariat de deux ans (prolongé depuis) entre les parties concernées.
+          Cette UMC est composée d'un composteur électromécanique et de son biofiltre contenus dans un conteneur maritime.
+          Elle permet de valoriser les biodéchets du lycée en un compost de qualité.
+        </p>
+
+        {# Carousel #}
+        <div id="carouselUMC" class="carousel slide rounded-3 shadow border border-success-subtle mb-4" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#carouselUMC" data-bs-slide-to="3"></button>
+          </div>
+          <div class="carousel-inner rounded-3" style="height:220px;">
+            <div class="carousel-item active h-100">
+              <img src="{{ asset('img/IMG_6871.jpeg') }}" class="d-block w-100 h-100 object-fit-cover" alt="UMC 1">
+            </div>
+            <div class="carousel-item h-100">
+              <img src="{{ asset('img/IMG_6873.jpeg') }}" class="d-block w-100 h-100 object-fit-cover" alt="UMC 2">
+            </div>
+            <div class="carousel-item h-100">
+              <img src="{{ asset('img/IMG_6874.jpeg') }}" class="d-block w-100 h-100 object-fit-cover" alt="UMC 3">
+            </div>
+            <div class="carousel-item h-100">
+              <img src="{{ asset('img/IMG_6878.jpeg') }}" class="d-block w-100 h-100 object-fit-cover" alt="UMC 4">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselUMC" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselUMC" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+
+        <p class="text-muted small mb-3">
+          Le partenariat avec le lycée Maupertuis a permis à l'entreprise TRIDIMENSION de valider le modèle
+          et la faisabilité technique de l'Unité Mobile de Compostage. Le procédé biologique a, lui aussi,
+          été validé avec la production d'un compost de qualité. L'outil sert désormais de site pilote de projets solaires.
+          Afin de rendre le module totalement autonome et de plus mobile, les étudiants de BTS Electrotechnique
+          ont implanté sur le conteneur une unité de production photovoltaïque.
+        </p>
+
+        <div class="d-grid gap-2">
+          <a href="{{ path('app_graphiques') }}" class="btn btn-success fw-semibold">Visualiser les graphiques</a>
+          <a href="{{ path('app_telechargement') }}" class="btn btn-outline-success fw-semibold">Télécharger les données</a>
+        </div>
+      </div>
+
+      {# Colonne droite #}
+      <div class="col-lg-8">
+
+        <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">Objectif du projet</h2>
+        <p>
+          L'objectif principal est de permettre un suivi de la production et de la consommation
+          électrique de la plateforme UMC implantée dans un conteneur afin de valider sa rentabilité.
+          Cette unité s'appuie sur des panneaux solaires associés à un onduleur, un régulateur et des batteries
+          pour rendre l'unité mobile de compostage complètement autonome en énergie.
+          Sur ce site, vous allez pouvoir observer et télécharger les données en temps réel de l'onduleur et des batteries.
+        </p>
+
+        <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3 mt-5">Partenaire industriel : TRIDIMENSION</h2>
+        <div class="alert alert-success border-start border-success border-4 rounded-3">
+          <p class="mb-2">
+            TRIDIMENSION est une structure spécialisée dans l'ingénierie et les solutions innovantes
+            liées à la gestion des déchets et à l'économie circulaire. Située au
+            <em>3 impasse du Grand Jardin, 35400 Saint-Malo</em>, elle accompagne les collectivités
+            et entreprises dans leur transition écologique.
+          </p>
+          <a href="https://tridimension.fr/" target="_blank" class="btn btn-success btn-sm">Visiter tridimension.fr ↗</a>
+        </div>
+
+        <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3 mt-4">Technologies utilisées</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex align-items-center gap-2">
+            <span class="badge bg-success rounded-pill">1</span>
+            <strong>Raspberry Pi</strong> — Acquisition et centralisation des données dans une base de données locale (MariaDB)
+          </li>
+          <li class="list-group-item d-flex align-items-center gap-2">
+            <span class="badge bg-success rounded-pill">2</span>
+            <strong>MariaDB locale</strong> — Base de données locale
+          </li>
+          <li class="list-group-item d-flex align-items-center gap-2">
+            <span class="badge bg-success rounded-pill">3</span>
+            <strong>FTPS</strong> — Copie des données vers OVH et transfert sécurisé (chiffré)
+          </li>
+          <li class="list-group-item d-flex align-items-center gap-2">
+            <span class="badge bg-success rounded-pill">4</span>
+            <strong>VPS OVH</strong> — Site Bootstrap + JS + Chart.js - Symfony - MariaDB distante
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

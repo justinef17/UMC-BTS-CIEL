@@ -1,0 +1,206 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Synoptique - UMC{% endblock %}
+
+{% block body %}
+
+  {# HERO #}
+  <div class="bg-success bg-gradient text-white py-4">
+    <div class="container">
+      <h1 class="fw-bold display-6 mb-1">Synoptique des matériaux</h1>
+      <p class="opacity-75 mb-0">Schéma du fonctionnement énergétique de l'Unité Mobile de Compostage - Installation photovoltaïque</p>
+    </div>
+  </div>
+
+  {# CONTENU #}
+  <div class="container my-5">
+
+    {# Schéma + Composants #}
+    <div class="row mb-5 align-items-start">
+
+      {# Schéma #}
+      <div class="col-lg-5 mb-4">
+        <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">Schéma de fonctionnement</h2>
+        <div class="card border-success shadow-sm">
+          <div class="card-body p-2">
+            <img src="{{ asset('img/IMG_7932.jpg') }}"
+                 class="img-fluid rounded w-100"
+                 alt="Schéma de fonctionnement de l'UMC"
+                 style="cursor:pointer; max-height:320px; object-fit:cover;"
+                 data-bs-toggle="modal"
+                 data-bs-target="#modalSchema"
+                 title="Cliquer pour agrandir">
+            <p class="text-muted text-center mt-1 mb-0" style="font-size:0.75rem;">
+              <i class="bi bi-zoom-in me-1"></i> Cliquer pour agrandir
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {# Composants #}
+      <div class="col-lg-7 mb-4">
+        <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">Composants</h2>
+        <div class="row g-2">
+
+          <div class="col-6">
+            <div class="card border-0 shadow-sm h-100 p-2">
+              <div class="fw-bold small text-warning-emphasis mb-1">Panneaux solaires - Sunman 375W</div>
+              <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+                <li>72 cellules monocristallines</li>
+                <li>Surface : 8 m² — 1500 W</li>
+                <li>V₀ = 48,6 V — Icc = 9,86 A</li>
+                <li>2 blocs série/parallèle</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card border-0 shadow-sm h-100 p-2">
+              <div class="fw-bold small text-primary mb-1">Régulateur MPPT - BlueSolar</div>
+              <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+                <li>Maximum Power Point Tracking</li>
+                <li>150 V max — 35 A</li>
+                <li>Réseau DC : 24 V</li>
+                <li>Connectivité Bluetooth</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card border-0 shadow-sm h-100 p-2">
+              <div class="fw-bold small text-danger mb-1">Onduleur - 1600 VA</div>
+              <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+                <li>Entrée DC : 24 V</li>
+                <li>Sortie AC : 230 V</li>
+                <li>Courant mesuré : 8,79 A</li>
+                <li>Alimente le composteur</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card border-0 shadow-sm h-100 p-2">
+              <div class="fw-bold small text-success mb-1">Batteries - Type Gel</div>
+              <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+                <li>24 V — 175,8 Ah</li>
+                <li>Énergie totale : 4219 Wh</li>
+                <li>Disponible à 50% : 2109 Wh</li>
+                <li>2 blocs série/parallèle</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card border-0 shadow-sm h-100 p-2">
+              <div class="fw-bold small text-success mb-1">Composteur - T60_40L</div>
+              <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+                <li>Besoin : 1,5 kW/jour</li>
+                <li>Veille : 40 W</li>
+                <li>Moteur rotation : 370 W</li>
+                <li>Moteur trémie : 550 W</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card border-0 shadow-sm h-100 p-2">
+              <div class="fw-bold small text-secondary mb-1">Charge — 230V AC</div>
+              <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+                <li>Prise 16A – 230V</li>
+                <li>Lampe (éclairage)</li>
+                <li>Alimenté par l'onduleur</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    {# SUPERVISION #}
+    <div class="row">
+      <div class="col-12">
+        <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">Supervision & Acquisition des données</h2>
+      </div>
+
+      <div class="col-md-3 mb-2">
+        <div class="card border-danger border-2 shadow-sm h-100 p-2">
+          <div class="fw-bold small text-danger mb-1">Raspberry Pi 3</div>
+          <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+            <li>Récupère les données onduleur</li>
+            <li>Tourne 24h/24 en local</li>
+            <li>Synchronise vers OVH</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-2">
+        <div class="card border-primary border-2 shadow-sm h-100 p-2">
+          <div class="fw-bold small text-primary mb-1">Base locale - MariaDB</div>
+          <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+            <li>Mesures datées</li>
+            <li>Disponible sans connexion</li>
+            <li>Source de la synchro OVH</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-2">
+        <div class="card border-secondary border-2 shadow-sm h-100 p-2">
+          <div class="fw-bold small text-secondary mb-1">Synchronisation - FTPS</div>
+          <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+            <li>Transfert sécurisé SSH</li>
+            <li>Copie locale vers OVH</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-2">
+        <div class="card border-success border-2 shadow-sm h-100 p-2">
+          <div class="fw-bold small text-success mb-1">VPS OVH</div>
+          <ul class="list-unstyled mb-0 text-muted" style="font-size:0.75rem;">
+            <li>MariaDB distante</li>
+            <li>Symfony</li>
+            <li>Site Bootstrap + Chart.js</li>
+          </ul>
+        </div>
+      </div>
+
+      {# Flux de données #}
+      <div class="col-12 mt-3">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body py-3 px-4">
+            <div class="d-flex align-items-center flex-wrap gap-2 justify-content-center text-center">
+              <span class="badge bg-danger px-3 py-2">Raspberry Pi</span>
+              <span class="text-success fw-bold">→</span>
+              <span class="badge bg-primary px-3 py-2">MariaDB locale</span>
+              <span class="text-success fw-bold">→</span>
+              <span class="badge bg-secondary px-3 py-2">FTPS</span>
+              <span class="text-success fw-bold">→</span>
+              <span class="badge bg-success px-3 py-2">VPS OVH</span>
+              <span class="text-success fw-bold">→</span>
+              <span class="badge bg-dark px-3 py-2">Site web</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {# MODAL ZOOM SCHÉMA #}
+  <div class="modal fade" id="modalSchema" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title fw-bold">Schéma de fonctionnement de l'UMC</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-2">
+          <img src="{{ asset('img/IMG_7932.jpg') }}" class="img-fluid w-100 rounded" alt="Schéma UMC agrandi">
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
