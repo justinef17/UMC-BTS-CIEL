@@ -1,0 +1,35 @@
+#ifndef IHM_LOCALE_H
+#define IHM_LOCALE_H
+
+#include <QMainWindow>
+#include <QtSql/QSqlDatabase>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QTimer>
+#include <QMessageBox>
+#include "ui_ihm_locale.h"
+
+class IhmLocale : public QMainWindow
+{
+    Q_OBJECT
+public:
+    explicit IhmLocale(QWidget *parent = nullptr);
+    ~IhmLocale();
+
+private slots:
+    void on_btnConnecter_clicked(); // Cconfiguration BDD
+    void on_btnDemarrer_clicked();
+    void on_btnArreter_clicked();
+    void on_btnExportCSV_clicked(); // bouton ftps
+    void actualiserDonnees(); // Visualisation temps réel
+
+private:
+    Ui::IhmLocale *ui;
+    QSqlDatabase dbLocale;
+    QTimer *timerAcquisition;
+    QNetworkAccessManager *networkManager;
+
+    void genererFichierCSV();
+    void repliquerVersAlwaysData();
+};
+#endif // IHM_LOCALE_H
