@@ -39,11 +39,11 @@ class GraphiquesController extends AbstractController
                     bat_tension    AS bat_v,
                     bat_courant    AS bat_a,
                     soc,
-                    ac_in_tension  AS ac_in_v,
-                    ac_in_courant  AS ac_in_a,
+                    dc_in_tension  AS ac_in_v,
+                    dc_in_courant  AS ac_in_a,
                     ac_out_tension AS ac_out_v,
                     ac_out_courant AS ac_out_a,
-                    NULL AS bat_temp
+                    NULL AS Temperature
              FROM mesures
              WHERE horodatage BETWEEN :debut AND :fin
              ORDER BY horodatage ASC",
@@ -55,8 +55,8 @@ class GraphiquesController extends AbstractController
                     bat_tension    AS batV,
                     bat_courant    AS batA,
                     soc,
-                    ac_in_tension  AS acInV,
-                    ac_in_courant  AS acInA,
+                    dc_in_tension  AS acInV,
+                    dc_in_courant  AS acInA,
                     ac_out_tension AS acOutV,
                     ac_out_courant AS acOutA,
                     NULL AS batTemp
@@ -108,11 +108,11 @@ class GraphiquesController extends AbstractController
                     bat_tension    AS bat_v,
                     bat_courant    AS bat_a,
                     soc,
-                    ac_in_tension  AS ac_in_v,
-                    ac_in_courant  AS ac_in_a,
+                    dc_in_tension  AS ac_in_v,
+                    dc_in_courant  AS ac_in_a,
                     ac_out_tension AS ac_out_v,
                     ac_out_courant AS ac_out_a,
-                    NULL AS bat_temp
+                    NULL AS Temperature
              FROM mesures ORDER BY horodatage DESC LIMIT 1"
         );
         return $this->json(['onduleur' => $onduleur ?: null]);

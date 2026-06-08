@@ -153,19 +153,19 @@
 
   <div class="row g-4 mb-4">
 
-    {# Graphique 1 : Tensions DC entrée / AC sortie #}
+    {# Graphique 1 : Tensions AC #}
     <div class="col-lg-6">
       <div class="card border-start border-success border-4 shadow-sm h-100">
         <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
-          Tensions DC entrée / AC sortie - Entree et Sortie
-          <span class="badge bg-success-subtle text-success ms-1 small">dc_in_v / ac_out_v</span>
+          Tensions AC - Entree et Sortie
+          <span class="badge bg-success-subtle text-success ms-1 small">ac_in_v / ac_out_v</span>
         </div>
         <div class="card-body">
           <canvas id="chartOndTensions"></canvas>
           {# canvas = zone de dessin Chart.js #}
           <div class="d-flex gap-2 mt-3 flex-wrap">
             <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
-              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.dcInV|number_format(1) }}{% else %}—{% endif %}</span> V DC Entrée
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.acInV|number_format(1) }}{% else %}—{% endif %}</span> V AC Entree
             </span>
             <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
               <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.acOutV|number_format(1) }}{% else %}—{% endif %}</span> V AC Sortie
@@ -175,18 +175,18 @@
       </div>
     </div>
 
-    {# Graphique 2 : Courants DC entrée / AC sortie #}
+    {# Graphique 2 : Courants AC #}
     <div class="col-lg-6">
       <div class="card border-start border-success border-4 shadow-sm h-100">
         <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
-          Courants DC entrée / AC sortie - Entree et Sortie
-          <span class="badge bg-success-subtle text-success ms-1 small">dc_in_a / ac_out_a</span>
+          Courants AC - Entree et Sortie
+          <span class="badge bg-success-subtle text-success ms-1 small">ac_in_a / ac_out_a</span>
         </div>
         <div class="card-body">
           <canvas id="chartOndCourants"></canvas>
           <div class="d-flex gap-2 mt-3 flex-wrap">
             <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
-              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.dcInA|number_format(2) }}{% else %}—{% endif %}</span> A DC Entrée
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.acInA|number_format(2) }}{% else %}—{% endif %}</span> A AC Entree
             </span>
             <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
               <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.acOutA|number_format(2) }}{% else %}—{% endif %}</span> A AC Sortie
@@ -351,7 +351,7 @@
 // donneesOnduleurJson est encodé en JSON dans le contrôleur avec json_encode()
 // Le filtre |raw empêche Twig d'échapper les guillemets du JSON
 const donneesOnduleur = {{ donneesOnduleurJson|raw }};
-// Résultat : un tableau JS [{horodatage:'2025-04-27 14:00:00', dcInV:230.1, ...}, ...]
+// Résultat : un tableau JS [{horodatage:'2025-04-27 14:00:00', acInV:230.1, ...}, ...]
 // Si BDD vide : []
 
 
@@ -363,9 +363,9 @@ Chart.defaults.color       = '#6c757d'; // gris pour textes des axes et légende
 
 // Couleurs des courbes
 const C = {
-  dcInV:  '#0d6efd', // bleu
+  acInV:  '#0d6efd', // bleu
   acOutV: '#198754', // vert
-  dcInA:  '#6f42c1', // violet
+  acInA:  '#6f42c1', // violet
   acOutA: '#20c997', // cyan
   batV:   '#fd7e14', // orange
   batA:   '#dc3545', // rouge
@@ -400,9 +400,9 @@ let dAcInV, dAcOutV, dAcInA, dAcOutA, dBatV, dBatA, dTemp, dSoc, dBattemp;
 if (donneesOnduleur.length > 0) {
 
   // BDD non vide : on utilise les vraies mesures
-  dAcInV  = xy(donneesOnduleur, 'dcInV');
+  dAcInV  = xy(donneesOnduleur, 'acInV');
   dAcOutV = xy(donneesOnduleur, 'acOutV');
-  dAcInA  = xy(donneesOnduleur, 'dcInA');
+  dAcInA  = xy(donneesOnduleur, 'acInA');
   dAcOutA = xy(donneesOnduleur, 'acOutA');
   dBatV   = xy(donneesOnduleur, 'batV');
   dBatA   = xy(donneesOnduleur, 'batA');
@@ -473,12 +473,12 @@ function dOpts(lL, lR) {
 // '22' après une couleur = 14% opacité pour le fond sous la courbe (transparence)
 
 new Chart('chartOndTensions', { type: 'line', data: { datasets: [
-  { label: 'DC Entrée (V)',  data: dAcInV,  borderColor: C.dcInV,  backgroundColor: C.dcInV  + '22', tension: .4, pointRadius: 2, fill: true },
+  { label: 'AC Entree (V)',  data: dAcInV,  borderColor: C.acInV,  backgroundColor: C.acInV  + '22', tension: .4, pointRadius: 2, fill: true },
   { label: 'AC Sortie (V)', data: dAcOutV, borderColor: C.acOutV, backgroundColor: C.acOutV + '22', tension: .4, pointRadius: 2, fill: true }
 ]}, options: tOpts('Tension (V)') });
 
 new Chart('chartOndCourants', { type: 'line', data: { datasets: [
-  { label: 'DC Entrée (A)',  data: dAcInA,  borderColor: C.dcInA,  backgroundColor: C.dcInA  + '22', tension: .4, pointRadius: 2, fill: true },
+  { label: 'AC Entree (A)',  data: dAcInA,  borderColor: C.acInA,  backgroundColor: C.acInA  + '22', tension: .4, pointRadius: 2, fill: true },
   { label: 'AC Sortie (A)', data: dAcOutA, borderColor: C.acOutA, backgroundColor: C.acOutA + '22', tension: .4, pointRadius: 2, fill: true }
 ]}, options: tOpts('Courant (A)') });
 

@@ -34,8 +34,8 @@ class TelechargementController extends AbstractController
         if ($source === 'onduleur') {
             $donnees = $connexion->fetchAllAssociative(
                 'SELECT horodatage,
-                        ac_in_tension  AS ac_in_v,
-                        ac_in_courant  AS ac_in_a,
+                        dc_in_tension  AS ac_in_v,
+                        dc_in_courant  AS ac_in_a,
                         ac_out_tension AS ac_out_v,
                         ac_out_courant AS ac_out_a
                  FROM mesures
@@ -59,8 +59,8 @@ class TelechargementController extends AbstractController
         } else {
             $donnees = $connexion->fetchAllAssociative(
                 'SELECT horodatage,
-                        ac_in_tension  AS ac_in_v,
-                        ac_in_courant  AS ac_in_a,
+                        dc_in_tension  AS ac_in_v,
+                        dc_in_courant  AS ac_in_a,
                         ac_out_tension AS ac_out_v,
                         ac_out_courant AS ac_out_a,
                         bat_tension    AS bat_v,
@@ -88,9 +88,9 @@ class TelechargementController extends AbstractController
         $response = new StreamedResponse(function () use ($donnees, $colonnes) {
             $handle = fopen('php://output', 'w');
             fwrite($handle, "\xEF\xBB\xBF");
-            fputcsv($handle, $colonnes, ';');
+            fputcsv($handle, $colonnes, ';', '"', '\\');
             foreach ($donnees as $ligne) {
-                fputcsv($handle, array_map(fn($c) => $ligne[$c] ?? '', $colonnes), ';');
+                fputcsv($handle, array_map(fn($c) => $ligne[$c] ?? '', $colonnes), ';', '"', '\\');
             }
             fclose($handle);
         });
@@ -137,25 +137,30 @@ class TelechargementController extends AbstractController
     }
 
     private function exportPdf(array $donnees, array $colonnes, string $nomFichier, string $source, string $debut, string $fin): Response
-    {
-        $html = $this->renderView('telechargement/pdf.html.twig', [
-            'donnees'  => $donnees,
-            'colonnes' => $colonnes,
-            'source'   => $source,
-            'debut'    => $debut,
-            'fin'      => $fin,
-        ]);
+ {
+    $html = $this->renderView('telechargement/pdf.html.twig', [
+        'donnees'  => $donnees,
+        'colonnes' => $colonnes,
+        'source'   => $source,
+        'debut'    => $debut,
+        'fin'      => $fin,
+    ]);
 
-        $dompdf = new \Dompdf\Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
+    $mpdf = new \Mpdf\Mpdf([
+        'margin_left'   => 10,
+        'margin_right'  => 10,
+        'margin_top'    => 10,
+        'margin_bottom' => 10,
+        'orientation'   => 'L',
+    ]);
 
-        return new Response($dompdf->output(), 200, [
-            'Content-Type'        => 'application/pdf',
-            'Content-Disposition' => "attachment; filename=\"{$nomFichier}.pdf\"",
-        ]);
-    }
+    $mpdf->WriteHTML($html);
+
+    return new Response($mpdf->Output($nomFichier . '.pdf', 'S'), 200, [
+        'Content-Type'        => 'application/pdf',
+        'Content-Disposition' => "attachment; filename=\"{$nomFichier}.pdf\"",
+    ]);
+  }
 
     private function calculerBornes(string $periode, string $date, ?string $debut, ?string $fin): array
     {
