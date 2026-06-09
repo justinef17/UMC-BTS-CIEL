@@ -1,0 +1,249 @@
+{% extends 'base.html.twig' %}
+{% block title %}Téléchargement - UMC{% endblock %}
+
+{% block body %}
+
+<div class="bg-success bg-gradient text-white py-4">
+  <div class="container">
+    <h1 class="fw-bold display-6 mb-1">Téléchargement des données</h1>
+    <p class="lead opacity-75 mb-0">Export des mesures énergétiques de l'UMC</p>
+  </div>
+</div>
+
+<div class="container my-5">
+
+  <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-4">Paramètres d'export</h2>
+
+  <div class="row mb-5">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <form action="{{ path('app_telechargement_export') }}" method="GET">
+            <div class="row g-3 align-items-end">
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Source</label>
+                <select class="form-select" name="source" id="source">
+                  <option value="onduleur">Onduleur</option>
+                  <option value="batteries">Batteries</option>
+                  <option value="les_deux">Les deux</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Période</label>
+                <select class="form-select" name="periode" id="periode" onchange="mettreAJourDate()">
+                  <option value="jour">Journée</option>
+                  <option value="semaine">Semaine</option>
+                  <option value="mois">Mois</option>
+                  <option value="annee">Année</option>
+                  <option value="perso">Personnalisée</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Format</label>
+                <select class="form-select" name="format">
+                  <option value="csv">CSV</option>
+                  <option value="xlsx">Excel (XLSX)</option>
+                  <option value="pdf">PDF</option>
+                </select>
+              </div>
+
+              <div class="col-md-4" id="blocDate">
+                <label class="form-label fw-semibold" id="labelDate">Date</label>
+                <input type="date" class="form-control" name="date" id="dateInput"
+                       value="{{ "now"|date("Y-m-d") }}">
+              </div>
+
+            </div>
+
+            <div class="row g-3 mt-1 d-none" id="blocPerso">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Date début</label>
+                <input type="date" class="form-control" name="debut" id="dateDebut">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Date fin</label>
+                <input type="date" class="form-control" name="fin" id="dateFin">
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <button type="submit" class="btn btn-success fw-semibold px-4">
+                <i class="bi bi-download me-2"></i>Générer et télécharger
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <h5 class="fw-bold text-success mb-3">Formats disponibles</h5>
+      <div class="list-group">
+        <div class="list-group-item d-flex align-items-center gap-3 border-start border-success border-4">
+          <i class="bi bi-filetype-csv text-success fs-4"></i>
+          <div>
+            <div class="fw-semibold">CSV</div>
+            <div class="text-muted small">Compatible Excel, Python, R</div>
+          </div>
+        </div>
+        <div class="list-group-item d-flex align-items-center gap-3 border-start border-success border-4">
+          <i class="bi bi-file-earmark-excel text-success fs-4"></i>
+          <div>
+            <div class="fw-semibold">Excel (XLSX)</div>
+            <div class="text-muted small">Tableau formaté avec en-têtes</div>
+          </div>
+        </div>
+        <div class="list-group-item d-flex align-items-center gap-3 border-start border-success border-4">
+          <i class="bi bi-file-earmark-pdf text-success fs-4"></i>
+          <div>
+            <div class="fw-semibold">PDF</div>
+            <div class="text-muted small">Rapport prêt à imprimer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-4">Colonnes exportées</h2>
+  <div class="row g-3 mb-5">
+
+    {# Onduleur #}
+    <div class="col-md-6">
+      <div class="card shadow-sm border-start border-success border-4 h-100">
+        <div class="card-header bg-white fw-semibold text-success">
+          Onduleur
+          <span class="badge bg-success-subtle text-success ms-1 small">table : mesures</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush small">
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">horodatage</span>
+              <span class="text-muted">Date et heure de la mesure</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">dc_in_tension</span>
+              <span class="text-muted">Tension DC entrée (V)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">dc_in_courant</span>
+              <span class="text-muted">Courant DC entrée (A)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">ac_out_tension</span>
+              <span class="text-muted">Tension AC sortie (V)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">ac_out_courant</span>
+              <span class="text-muted">Courant AC sortie (A)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {# Batteries #}
+    <div class="col-md-6">
+      <div class="card shadow-sm border-start border-success border-4 h-100">
+        <div class="card-header bg-white fw-semibold text-success">
+          Batteries
+          <span class="badge bg-success-subtle text-success ms-1 small">table : mesures</span>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush small">
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">horodatage</span>
+              <span class="text-muted">Date et heure de la mesure</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">bat_tension</span>
+              <span class="text-muted">Tension batterie (V)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">bat_courant</span>
+              <span class="text-muted">Courant batterie (A)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="font-monospace">soc</span>
+              <span class="text-muted">Etat de charge (%)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {# Régulateur — non disponible #}
+    <div class="col-md-6">
+      <div class="card shadow-sm border-start border-secondary border-4 h-100 opacity-75">
+        <div class="card-header bg-white fw-semibold text-secondary">
+          Régulateur MPPT
+          <span class="badge bg-secondary ms-1 small">non disponible</span>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-warning p-2 small mb-2">
+            Les données du régulateur MPPT ne sont pas encore accessibles.
+            Le protocole VE Direct sera intégré dans une prochaine version.
+          </div>
+          <ul class="list-group list-group-flush small">
+            <li class="list-group-item px-0 d-flex justify-content-between text-muted">
+              <span class="font-monospace">pv_v</span>
+              <span>Tension panneaux (V)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between text-muted">
+              <span class="font-monospace">pv_a</span>
+              <span>Courant panneaux (A)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between text-muted">
+              <span class="font-monospace">bat_v</span>
+              <span>Tension batterie (V)</span>
+            </li>
+            <li class="list-group-item px-0 d-flex justify-content-between text-muted">
+              <span class="font-monospace">bat_a</span>
+              <span>Courant batterie (A)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+function mettreAJourDate() {
+  const periode   = document.getElementById('periode').value;
+  const labelDate = document.getElementById('labelDate');
+  const dateInput = document.getElementById('dateInput');
+  const blocDate  = document.getElementById('blocDate');
+  const blocPerso = document.getElementById('blocPerso');
+
+  blocPerso.classList.add('d-none');
+  blocDate.classList.remove('d-none');
+
+  if (periode === 'jour') {
+    labelDate.textContent = 'Date';
+    dateInput.type = 'date';
+  } else if (periode === 'semaine') {
+    labelDate.textContent = 'Semaine';
+    dateInput.type = 'week';
+  } else if (periode === 'mois') {
+    labelDate.textContent = 'Mois';
+    dateInput.type = 'month';
+  } else if (periode === 'annee') {
+    labelDate.textContent = 'Année';
+    dateInput.type = 'number';
+    dateInput.min = '2024';
+    dateInput.max = '2030';
+    dateInput.value = new Date().getFullYear();
+  } else if (periode === 'perso') {
+    blocDate.classList.add('d-none');
+    blocPerso.classList.remove('d-none');
+  }
+}
+</script>
+{% endblock %}

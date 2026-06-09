@@ -1,0 +1,330 @@
+{% extends 'base.html.twig' %}
+{% block title %}Ressources - UMC{% endblock %}
+
+{% block body %}
+
+<div class="bg-success bg-gradient text-white py-5">
+  <div class="container">
+    <h1 class="fw-bold display-6">Ressources du projet</h1>
+    <p class="lead mt-2 opacity-75">Documentations et liens utiles pour chaque partie du projet UMC.</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row g-5">
+
+    {# Github #}
+    <div class="col-12">
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+        Code source du projet
+      </h2>
+      <p class="text-muted mb-4">
+        Dépôt GitHub du projet UMC - code source complet des trois parties.
+      </p>
+      <div class="row g-3">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-dark border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">
+                <i class="bi bi-github me-2"></i>UMC-BTS-CIEL
+              </h5>
+              <p class="card-text text-muted small">
+                Dépôt GitHub du projet UMC : interface web Symfony, IHM Qt/FTPS
+                et scripts Raspberry Pi. Code source complet de l'équipe.
+              </p>
+              <a href="https://github.com/justinef17/UMC-BTS-CIEL" target="_blank"
+                 class="btn btn-dark btn-sm">
+                <i class="bi bi-github me-1"></i>Voir le dépôt
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {# Partie 1 #}
+    <div class="col-12">
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+        Partie 1 - Acquisition des données et base de données locale
+      </h2>
+      <p class="text-muted mb-4">
+        Ressources pour la communication avec l'onduleur, la Raspberry Pi et la gestion de la base MariaDB locale.
+      </p>
+      <div class="row g-3">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-success border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-success">Protocole VE.Bus MK2</h5>
+              <p class="card-text text-muted small">
+                Document officiel Victron Energy décrivant le protocole MK2 pour interfacer
+                les produits VE.Bus, base de la communication avec la Raspberry Pi.
+              </p>
+              <a href="https://www.victronenergy.com/upload/documents/Technical-Information-Interfacing-with-VE-Bus-products-MK2-Protocol-3-14.pdf"
+               target="_blank" class="btn btn-success btn-sm"> Voir la documentation
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-success border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-success">Victron VE.Direct Protocol</h5>
+              <p class="card-text text-muted small">
+                Documentation du protocole VE.Direct utilisé par les régulateurs MPPT Victron
+                pour transmettre leurs données via port série.
+              </p>
+              <a href="https://www.victronenergy.com/upload/documents/VE.Direct-Protocol-3.33.pdf"
+                 target="_blank" class="btn btn-success btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-success border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-success">Documentation MariaDB</h5>
+              <p class="card-text text-muted small">
+                Documentation officielle MariaDB : création de tables, requêtes SQL,
+                gestion des utilisateurs et configuration du serveur local.
+              </p>
+              <a href="https://mariadb.com/kb/en/documentation/" target="_blank"
+                 class="btn btn-success btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-success border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-success">Documentation Raspberry Pi</h5>
+              <p class="card-text text-muted small">
+                Documentation officielle Raspberry Pi : configuration, communication série,
+                installation de services au démarrage.
+              </p>
+              <a href="https://www.raspberrypi.com/documentation/" target="_blank"
+                 class="btn btn-success btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-success border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-success">MySQL Connector Python</h5>
+              <p class="card-text text-muted small">
+                Connecteur pour insérer les mesures dans MariaDB
+                depuis le script d'acquisition sur la Raspberry Pi.
+              </p>
+              <a href="https://dev.mysql.com/doc/connector-python/en/" target="_blank"
+                 class="btn btn-success btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {# Partie 2 #}
+    <div class="col-12">
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+        Partie 2 - Transfert SFTP, Alwaysdata et réplication de la base de données
+      </h2>
+      <p class="text-muted mb-4">
+        Ressources pour le transfert des données entre la Raspberry Pi et le serveur Alwaysdata via FileZilla SFTP.
+      </p>
+      <div class="row g-3">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-primary border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-primary">FileZilla Server</h5>
+              <p class="card-text text-muted small">
+                Documentation pour configurer FileZilla Server avec chiffrement TLS
+                et gestion des utilisateurs SFTP.
+              </p>
+              <a href="https://wiki.filezilla-project.org/FileZilla_Server" target="_blank"
+                 class="btn btn-primary btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-primary border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-primary">FileZilla Client</h5>
+              <p class="card-text text-muted small">
+                Documentation du client FileZilla pour se connecter au serveur SFTP
+                et transférer les fichiers de base de données.
+              </p>
+              <a href="https://wiki.filezilla-project.org/Documentation" target="_blank"
+                 class="btn btn-primary btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-primary border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-primary">Alwaysdata - Admin</h5>
+              <p class="card-text text-muted small">
+                Accès au panneau d'administration Alwaysdata pour gérer l'hébergement,
+                la base de données MariaDB distante et les informations de connexion.
+              </p>
+              <a href="https://admin.alwaysdata.com" target="_blank"
+                 class="btn btn-primary btn-sm">Accéder à l'admin</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-primary border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-primary">Alwaysdata - Documentation</h5>
+              <p class="card-text text-muted small">
+                Documentation officielle Alwaysdata : configuration PHP, bases de données,
+                déploiement d'applications Symfony et gestion SFTP/FTPS.
+              </p>
+              <a href="https://help.alwaysdata.com/" target="_blank"
+                 class="btn btn-primary btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-primary border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-primary">Alwaysdata - phpMyAdmin</h5>
+              <p class="card-text text-muted small">
+                Interface phpMyAdmin d'Alwaysdata pour gérer la base de données,
+                importer des données et exécuter des requêtes SQL.
+              </p>
+              <a href="https://phpmyadmin.alwaysdata.com" target="_blank"
+                 class="btn btn-primary btn-sm">Accéder à phpMyAdmin</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-primary border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-primary">MariaDB - mysqldump et import</h5>
+              <p class="card-text text-muted small">
+                Documentation sur <code>mysqldump</code> pour exporter la base locale
+                et l'importer sur Alwaysdata pour la réplication des données.
+              </p>
+              <a href="https://mariadb.com/kb/en/mysqldump/" target="_blank"
+                 class="btn btn-primary btn-sm">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {# Partie 3 #}
+    <div class="col-12">
+      <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+        Partie 3 - Interface web : Symfony, Twig et Bootstrap
+      </h2>
+      <p class="text-muted mb-4">
+        Ressources pour la mise en place du framework Symfony, les templates Twig
+        et la mise en forme avec Bootstrap.
+      </p>
+      <div class="row g-3">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-warning border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-warning">Symfony - Documentation</h5>
+              <p class="card-text text-muted small">
+                Documentation complète de Symfony : contrôleurs, routing,
+                Doctrine DBAL, requêtes HTTP et déploiement.
+              </p>
+              <a href="https://symfony.com/doc/current/index.html" target="_blank"
+                 class="btn btn-warning btn-sm text-dark">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-warning border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-warning">Symfony - Installation</h5>
+              <p class="card-text text-muted small">
+                Guide d'installation de Symfony CLI, création d'un projet,
+                configuration du <code>.env</code> et lancement du serveur local.
+              </p>
+              <a href="https://symfony.com/download" target="_blank"
+                 class="btn btn-warning btn-sm text-dark">Installer Symfony</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-warning border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-warning">Twig - Moteur de templates</h5>
+              <p class="card-text text-muted small">
+                Documentation Twig : héritage avec <code>extends</code>,
+                blocs <code>block</code>, filtres, boucles <code>for</code> et conditions <code>if</code>.
+              </p>
+              <a href="https://twig.symfony.com/doc/3.x/" target="_blank"
+                 class="btn btn-warning btn-sm text-dark">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-warning border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-warning">Doctrine DBAL</h5>
+              <p class="card-text text-muted small">
+                Documentation Doctrine DBAL pour exécuter des requêtes SQL
+                directes sur MariaDB depuis les contrôleurs Symfony.
+              </p>
+              <a href="https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/index.html"
+                 target="_blank" class="btn btn-warning btn-sm text-dark">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-warning border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-warning">Bootstrap 5</h5>
+              <p class="card-text text-muted small">
+                Documentation Bootstrap 5 : grille responsive, composants
+                (cards, badges, navbar, alerts) et utilitaires de mise en forme.
+              </p>
+              <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/"
+                 target="_blank" class="btn btn-warning btn-sm text-dark">Voir la documentation</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-start border-warning border-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-warning">Bootstrap Icons</h5>
+              <p class="card-text text-muted small">
+                Bibliothèque d'icônes Bootstrap utilisée sur toutes les pages du site.
+              </p>
+              <a href="https://icons.getbootstrap.com/" target="_blank"
+                 class="btn btn-warning btn-sm text-dark">Voir les icônes</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+

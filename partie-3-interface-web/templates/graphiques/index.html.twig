@@ -1,0 +1,562 @@
+{% extends 'base.html.twig' %}
+{# Hérite du template de base qui contient le header, la navbar et le footer communs #}
+
+{% block title %}Graphiques - UMC{% endblock %}
+{# Titre de l'onglet du navigateur #}
+
+{% block body %}
+
+{#   Titre
+   donneesReelles = variable PHP true/false envoyée par le contrôleur
+ #}
+<div class="bg-success bg-gradient text-white py-4">
+  <div class="container d-flex align-items-center flex-wrap gap-3">
+    <div>
+      <h1 class="fw-bold display-6 mb-1">Graphiques</h1>
+      <p class="lead opacity-75 mb-0">Visualisation des données de production solaire et électrique de l'UMC</p>
+    </div>
+    <div class="ms-auto">
+      {# Badge vert si vraies données, jaune si démo - opérateur ternaire Twig : condition ? vrai : faux #}
+      <span id="statut-connexion" class="badge {{ donneesReelles ? 'bg-success' : 'bg-warning text-dark' }} fs-6 px-3 py-2">
+        {% if donneesReelles %}
+          Données en direct
+        {% else %}
+          Aucune donnée : démo active
+        {% endif %}
+      </span>
+    </div>
+  </div>
+</div>
+
+{# 
+   Barre de filtres
+   periodeActive, dateDebut, dateFin = variables envoyées par le contrôleur
+ #}
+<div class="bg-white border-bottom py-3">
+  <div class="container">
+    <div class="row g-3 align-items-end">
+
+      {# Boutons de période rapide #}
+      <div class="col-sm-auto">
+        <label class="form-label fw-semibold text-success small mb-1">Période</label>
+        <div class="btn-group" id="btnPeriode">
+          {# active est ajouté sur le bouton correspondant à la période courante #}
+          <button type="button" class="btn btn-outline-success btn-sm {% if periodeActive == '1h' %}active{% endif %}" data-periode="1h">1h</button>
+          <button type="button" class="btn btn-outline-success btn-sm {% if periodeActive == '6h' %}active{% endif %}" data-periode="6h">6h</button>
+          <button type="button" class="btn btn-outline-success btn-sm {% if periodeActive == '24h' or not periodeActive %}active{% endif %}" data-periode="24h">24h</button>
+          {# "or not periodeActive" = actif par défaut si aucun paramètre GET dans l'URL #}
+          <button type="button" class="btn btn-outline-success btn-sm {% if periodeActive == '7j' %}active{% endif %}" data-periode="7j">7 jours</button>
+          <button type="button" class="btn btn-outline-success btn-sm {% if periodeActive == '30j' %}active{% endif %}" data-periode="30j">30 jours</button>
+        </div>
+      </div>
+
+      {# Champs de dates personnalisées : valeurs pré-remplies par le contrôleur #}
+      <div class="col-sm-auto">
+        <label class="form-label fw-semibold text-success small mb-1">Date début</label>
+        <input type="datetime-local" id="dateDebut" class="form-control form-control-sm w-auto" value="{{ dateDebut }}">
+      </div>
+      <div class="col-sm-auto">
+        <label class="form-label fw-semibold text-success small mb-1">Date fin</label>
+        <input type="datetime-local" id="dateFin" class="form-control form-control-sm w-auto" value="{{ dateFin }}">
+      </div>
+
+      {# Bouton qui recharge la page avec les dates saisies #}
+      <div class="col-sm-auto">
+        <button class="btn btn-success btn-sm" id="btnFiltrer">Filtrer</button>
+      </div>
+
+      {# Switch temps réel : pousse à droite avec ms-auto #}
+      <div class="col-sm-auto ms-auto">
+        <div class="form-check form-switch mb-0 d-flex align-items-center gap-2">
+          <input class="form-check-input" type="checkbox" id="tempsReel" style="width:2.5em;height:1.3em;">
+          <label class="form-check-label fw-semibold text-success" for="tempsReel">Temps réel (30s)</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{# 
+   Carte resumé - dernières valeurs de la BDD
+   derniereOnduleur = objet PHP avec les dernières mesures (ou null si BDD vide)
+ #}
+<div class="container mt-4">
+  <div class="row g-3 mb-4">
+
+    {# col-6 col-md-3 = 2 cartes par ligne sur mobile, 4 sur écran moyen #}
+
+    <div class="col-6 col-md-3">
+      <div class="card border-success border-2 text-center py-2">
+        <div class="card-body p-2">
+          <div class="text-muted small mb-1">Tension AC sortie</div>
+          <div class="fw-bold text-success fs-4">
+            {# number_format(1) = affiche avec 1 décimale. Si null → affiche "—" #}
+            {% if derniereOnduleur %}{{ derniereOnduleur.acOutV|number_format(1) }} V{% else %}—{% endif %}
+          </div>
+          <div class="text-muted small">Volt (V)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card border-success border-2 text-center py-2">
+        <div class="card-body p-2">
+          <div class="text-muted small mb-1">Tension batterie</div>
+          <div class="fw-bold text-success fs-4">
+            {% if derniereOnduleur %}{{ derniereOnduleur.batV|number_format(1) }} V{% else %}—{% endif %}
+          </div>
+          <div class="text-muted small">Volt (V)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card border-success border-2 text-center py-2">
+        <div class="card-body p-2">
+          <div class="text-muted small mb-1">Etat de charge</div>
+          <div class="fw-bold text-success fs-4">
+            {# soc est un entier, pas besoin de number_format #}
+            {% if derniereOnduleur %}{{ derniereOnduleur.soc }} %{% else %}—{% endif %}
+          </div>
+          <div class="text-muted small">SoC (%)</div>
+        </div>
+      </div>
+    </div>
+
+    {# Carte rouge = bat_temp nullable (capteur pas encore branché) #}
+    <div class="col-6 col-md-3">
+      <div class="card border-danger border-2 text-center py-2">
+        <div class="card-body p-2">
+          <div class="text-muted small mb-1">Temperature batterie</div>
+          <div class="fw-bold text-danger fs-4">
+            {# "is not null" vérifie que la colonne bat_temp existe et contient une valeur #}
+            {% if derniereOnduleur and derniereOnduleur.batTemp is not null %}
+              {{ derniereOnduleur.batTemp|number_format(1) }} C
+            {% else %}—{% endif %}
+          </div>
+          <div class="text-muted small">degres C</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {#
+     Section onduleur — 5 graphiques Chart.js
+   #}
+  <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+    Onduleur
+    <span class="badge bg-success ms-2 small">mesure_onduleur</span>
+    {# badge = rappel de la table MariaDB source #}
+  </h2>
+
+  <div class="row g-4 mb-4">
+
+    {# Graphique 1 : Tensions DC entrée / AC sortie #}
+    <div class="col-lg-6">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          Tensions DC entrée / AC sortie - Entree et Sortie
+          <span class="badge bg-success-subtle text-success ms-1 small">dc_in_v / ac_out_v</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartOndTensions"></canvas>
+          {# canvas = zone de dessin Chart.js #}
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.dcInV|number_format(1) }}{% else %}—{% endif %}</span> V DC Entrée
+            </span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.acOutV|number_format(1) }}{% else %}—{% endif %}</span> V AC Sortie
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Graphique 2 : Courants DC entrée / AC sortie #}
+    <div class="col-lg-6">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          Courants DC entrée / AC sortie - Entree et Sortie
+          <span class="badge bg-success-subtle text-success ms-1 small">dc_in_a / ac_out_a</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartOndCourants"></canvas>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.dcInA|number_format(2) }}{% else %}—{% endif %}</span> A DC Entrée
+            </span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.acOutA|number_format(2) }}{% else %}—{% endif %}</span> A AC Sortie
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Graphique 3 : Batterie — double axe Y (V gauche, A droite) #}
+    <div class="col-lg-6">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          Batterie - Tension et Courant
+          <span class="badge bg-success-subtle text-success ms-1 small">bat_v / bat_a</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartBat"></canvas>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.batV|number_format(1) }}{% else %}—{% endif %}</span> V Tension
+            </span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.batA|number_format(2) }}{% else %}—{% endif %}</span> A Courant
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Graphique 4 : Temperature batterie (bordure rouge = colonne nullable) #}
+    <div class="col-lg-6">
+      <div class="card border-start border-danger border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-danger border-bottom border-danger-subtle">
+          Temperature batterie (C)
+          <span class="badge bg-danger-subtle text-danger ms-1 small">bat_temp</span>
+          {# tempDisponible envoyé par le contrôleur via SHOW COLUMNS #}
+          {% if not tempDisponible %}
+            <span class="badge bg-secondary ms-1 small">Données non disponibles</span>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <canvas id="chartTemp"></canvas>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">
+                {% if derniereOnduleur and derniereOnduleur.batTemp is not null %}
+                  {{ derniereOnduleur.batTemp|number_format(1) }}
+                {% else %}—{% endif %}
+              </span> C Temperature actuelle
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Graphique 5 : Etat de charge SoC (axe Y fixé 0-100%) #}
+    <div class="col-lg-6">
+      <div class="card border-start border-success border-4 shadow-sm h-100">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          Etat de charge (SoC)
+          <span class="badge bg-success-subtle text-success ms-1 small">soc</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartSoc"></canvas>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-3 px-3 py-2 fs-6">
+              <span class="fw-bold">{% if derniereOnduleur %}{{ derniereOnduleur.soc }}{% else %}—{% endif %}</span> % SoC actuel
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# 
+     Puissancce - calculée côté JS (P = U × I)
+     + tableau résumé avec stats PHP calculées par le contrôleur
+ #}
+  <h2 class="fw-bold text-success border-bottom border-success border-2 pb-2 mb-3">
+    Puissance et rentabilité estimée
+  </h2>
+
+  <div class="row g-4 mb-5">
+
+    <div class="col-lg-8">
+      <div class="card border-start border-success border-4 shadow-sm">
+        <div class="card-header bg-white fw-semibold text-success border-bottom border-success-subtle">
+          Puissance AC entree / sortie (W)
+          <span class="badge bg-success-subtle text-success ms-1 small">U x I = P</span>
+          {# La puissance n'est pas en BDD, elle est calculée en JS : ac_out_v × ac_out_a #}
+        </div>
+        <div class="card-body">
+          <canvas id="chartPuissance"></canvas>
+        </div>
+      </div>
+    </div>
+
+    {# Tableau résumé : stats calculées par le contrôleur PHP #}
+    <div class="col-lg-4">
+      <div class="card border-success border-2 h-100">
+        <div class="card-header bg-success text-white fw-semibold">Resumé période</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Puissance max. sortie
+              {# is defined = vérifie que la variable existe avant d'y accéder #}
+              {# ~ = concaténation en Twig (comme le . en PHP) #}
+              <span class="badge bg-success rounded-pill">{{ stats.puissanceMax is defined ? stats.puissanceMax|number_format(1)~' W' : '— W' }}</span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Puissance moy. sortie
+              <span class="badge bg-success rounded-pill">{{ stats.puissanceMoy is defined ? stats.puissanceMoy|number_format(1)~' W' : '— W' }}</span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Temp. max. batterie
+              <span class="badge bg-danger rounded-pill">{{ stats.tempMax is defined ? stats.tempMax|number_format(1)~' C' : '— C' }}</span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              SoC min. batterie
+              <span class="badge bg-warning text-dark rounded-pill">{{ stats.socMin is defined ? stats.socMin~' %' : '— %' }}</span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Nb mesures
+              <span class="badge bg-secondary rounded-pill">{{ stats.nbMesures is defined ? stats.nbMesures : '—' }}</span>
+            </li>
+
+          </ul>
+          <div class="alert alert-success mt-3 p-2 small mb-0">
+            Energie (Wh) = integration des puissances sur la periode.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{# 
+   Bloc JS
+   Chargé après le body pour ne pas ralentir l'affichage de la page
+ #}
+{% block javascripts %}
+
+{# Bibliothèque Chart.js pour tracer les graphiques en courbes #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+{# Adaptateur date-fns : permet d'afficher des dates sur l'axe X au format dd/MM HH:mm #}
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<script>
+
+// Données JSON envoyées par le contrôleur PHP 
+// donneesOnduleurJson est encodé en JSON dans le contrôleur avec json_encode()
+// Le filtre |raw empêche Twig d'échapper les guillemets du JSON
+const donneesOnduleur = {{ donneesOnduleurJson|raw }};
+// Résultat : un tableau JS [{horodatage:'2025-04-27 14:00:00', dcInV:230.1, ...}, ...]
+// Si BDD vide : []
+
+
+// Configuration globale Chart.js 
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.font.size   = 11;
+Chart.defaults.color       = '#6c757d'; // gris pour textes des axes et légendes
+
+
+// Couleurs des courbes
+const C = {
+  dcInV:  '#0d6efd', // bleu
+  acOutV: '#198754', // vert
+  dcInA:  '#6f42c1', // violet
+  acOutA: '#20c997', // cyan
+  batV:   '#fd7e14', // orange
+  batA:   '#dc3545', // rouge
+  temp:   '#dc3545', // rouge
+  soc:    '#198754', // vert
+  pInW:   '#0d6efd', // bleu
+  pOutW:  '#198754', // vert
+  
+};
+
+
+// Fonctions utilitaires
+// xy() : transforme un tableau de mesures BDD en points Chart.js {x: Date, y: valeur}
+function xy(arr, k) {
+  return arr.map(r => ({ x: new Date(r.horodatage), y: r[k] }));
+}
+
+// demo() : crée des données fictives quand la BDD est vide
+// n = nb points, base = valeur centrale, amp = amplitude de variation
+function demo(n, base, amp) {
+  const now = new Date();
+  return Array.from({length: n}, (_, i) => ({
+    x: new Date(now - (n - i) * 3600000), // 1 point par heure en remontant dans le temps
+    y: +(base + (Math.random() - 0.5) * amp * 2).toFixed(2)
+  }));
+}
+
+
+//  Données réelles ou de démo selon si la BDD est vide 
+let dAcInV, dAcOutV, dAcInA, dAcOutA, dBatV, dBatA, dTemp, dSoc, dBattemp;
+
+if (donneesOnduleur.length > 0) {
+
+  // BDD non vide : on utilise les vraies mesures
+  dAcInV  = xy(donneesOnduleur, 'dcInV');
+  dAcOutV = xy(donneesOnduleur, 'acOutV');
+  dAcInA  = xy(donneesOnduleur, 'dcInA');
+  dAcOutA = xy(donneesOnduleur, 'acOutA');
+  dBatV   = xy(donneesOnduleur, 'batV');
+  dBatA   = xy(donneesOnduleur, 'batA');
+  dTemp   = xy(donneesOnduleur, 'batTemp').filter(p => p.y !== null);
+  // .filter() supprime les points null (bat_temp pas encore en BDD)
+  dSoc    = xy(donneesOnduleur, 'soc');
+
+} else {
+
+  // BDD vide : données fictives
+  const N = 24;
+  dAcInV  = demo(N, 230,  4);
+  dAcOutV = demo(N, 228,  3);
+  dAcInA  = demo(N, 2.1, .8);
+  dAcOutA = demo(N, 1.9, .7);
+  dBatV   = demo(N, 48.5, 2.5);
+  dBatA   = demo(N, 5.2, 3);
+  dTemp   = demo(N, 28, 6).map(d => ({ x: d.x, y: Math.max(0, d.y) }));
+  // Math.max(0, ...) : température minimum 0
+  dSoc    = demo(N, 72, 12).map(d => ({ x: d.x, y: Math.min(100, Math.max(0, d.y)) }));
+  // Math.min/max : SoC entre 0 et 100%
+}
+
+// Puissance calculée : P = U × I (pas en BDD, calculée ici)
+const dPIn  = dAcInV.map( (d, i) => ({ x: d.x, y: +(d.y * dAcInA[i].y ).toFixed(1) }));
+const dPOut = dAcOutV.map((d, i) => ({ x: d.x, y: +(d.y * dAcOutA[i].y).toFixed(1) }));
+
+
+//  Options graphique axe Y simple
+function tOpts(lbl) {
+  return {
+    responsive: true, maintainAspectRatio: true,
+    interaction: { mode: 'index', intersect: false },
+    // mode:'index' affiche les tooltips de toutes les courbes au même horodatage
+    plugins: { legend: { position: 'top', labels: { boxWidth: 12, padding: 10 } } },
+    scales: {
+      x: {
+        type: 'time', // axe X temporel, nécessite chartjs-adapter-date-fns
+        time: { tooltipFormat: 'dd/MM HH:mm', displayFormats: { hour: 'HH:mm', day: 'dd/MM' } },
+        grid: { color: '#f0f0f0' }, ticks: { maxTicksLimit: 8 }
+      },
+      y: { title: { display: true, text: lbl }, grid: { color: '#f0f0f0' } }
+    }
+  };
+}
+
+//  Options graphique double axe Y (Volts gauche, Ampères droite) 
+function dOpts(lL, lR) {
+  return {
+    responsive: true, maintainAspectRatio: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { position: 'top', labels: { boxWidth: 12, padding: 10 } } },
+    scales: {
+      x: {
+        type: 'time',
+        time: { tooltipFormat: 'dd/MM HH:mm', displayFormats: { hour: 'HH:mm' } },
+        grid: { color: '#f0f0f0' }, ticks: { maxTicksLimit: 8 }
+      },
+      yL: { type: 'linear', position: 'left',  title: { display: true, text: lL }, grid: { color: '#f0f0f0' } },
+      yR: { type: 'linear', position: 'right', title: { display: true, text: lR }, grid: { drawOnChartArea: false } }
+      // drawOnChartArea:false = pas de grille pour l'axe droit (évite le doublon)
+    }
+  };
+}
+
+
+// ─── Création des 6 graphiques ─────────────────────────────────────────────────
+// '22' après une couleur = 14% opacité pour le fond sous la courbe (transparence)
+
+new Chart('chartOndTensions', { type: 'line', data: { datasets: [
+  { label: 'DC Entrée (V)',  data: dAcInV,  borderColor: C.dcInV,  backgroundColor: C.dcInV  + '22', tension: .4, pointRadius: 2, fill: true },
+  { label: 'AC Sortie (V)', data: dAcOutV, borderColor: C.acOutV, backgroundColor: C.acOutV + '22', tension: .4, pointRadius: 2, fill: true }
+]}, options: tOpts('Tension (V)') });
+
+new Chart('chartOndCourants', { type: 'line', data: { datasets: [
+  { label: 'DC Entrée (A)',  data: dAcInA,  borderColor: C.dcInA,  backgroundColor: C.dcInA  + '22', tension: .4, pointRadius: 2, fill: true },
+  { label: 'AC Sortie (A)', data: dAcOutA, borderColor: C.acOutA, backgroundColor: C.acOutA + '22', tension: .4, pointRadius: 2, fill: true }
+]}, options: tOpts('Courant (A)') });
+
+new Chart('chartBat', { type: 'line', data: { datasets: [
+  { label: 'Tension (V)',  data: dBatV, borderColor: C.batV, backgroundColor: C.batV + '22', tension: .4, pointRadius: 2, yAxisID: 'yL' },
+  // yAxisID:'yL' lie la courbe à l'axe gauche (Volts)
+  { label: 'Courant (A)', data: dBatA, borderColor: C.batA, backgroundColor: C.batA + '22', tension: .4, pointRadius: 2, yAxisID: 'yR' }
+  // yAxisID:'yR' lie la courbe à l'axe droit (Ampères)
+]}, options: dOpts('Tension (V)', 'Courant (A)') });
+
+new Chart('chartTemp', { type: 'line', data: { datasets: [
+  { label: 'Temperature (C)', data: dTemp, borderColor: C.temp, backgroundColor: C.temp + '22', tension: .4, pointRadius: 2, fill: true }
+]}, options: tOpts('Temperature (C)') });
+
+new Chart('chartSoc', { type: 'line', data: { datasets: [
+  { label: 'SoC (%)', data: dSoc, borderColor: C.soc, backgroundColor: C.soc + '33', tension: .4, pointRadius: 2, fill: true }
+  // '33' = 20% opacité, un peu plus visible pour représenter le niveau de charge
+]}, options: {
+  responsive: true, maintainAspectRatio: true,
+  interaction: { mode: 'index', intersect: false },
+  plugins: { legend: { position: 'top', labels: { boxWidth: 12, padding: 10 } } },
+  scales: {
+    x: { type: 'time', time: { tooltipFormat: 'dd/MM HH:mm', displayFormats: { hour: 'HH:mm' } }, grid: { color: '#f0f0f0' }, ticks: { maxTicksLimit: 8 } },
+    y: { min: 0, max: 100, title: { display: true, text: 'SoC (%)' }, grid: { color: '#f0f0f0' } }
+    // min:0 max:100 force l'axe entre 0% et 100% (une batterie à 70% ne doit pas sembler pleine)
+  }
+}});
+
+new Chart('chartPuissance', { type: 'line', data: { datasets: [
+  { label: 'Puissance entree (W)',  data: dPIn,  borderColor: C.pInW,  backgroundColor: C.pInW  + '22', tension: .4, pointRadius: 2, fill: true },
+  { label: 'Puissance sortie (W)', data: dPOut, borderColor: C.pOutW, backgroundColor: C.pOutW + '22', tension: .4, pointRadius: 2, fill: true }
+]}, options: tOpts('Puissance (W)') });
+
+
+//  Boutons de période rapide
+document.querySelectorAll('#btnPeriode button').forEach(b => {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('#btnPeriode button').forEach(x => x.classList.remove('active'));
+    this.classList.add('active'); // marque visuellement le bouton cliqué
+    // Recharge la page avec le paramètre GET ?periode=...
+    // path('app_graphiques') = génération d'URL par Twig/Symfony
+    window.location.href = "{{ path('app_graphiques') }}?periode=" + this.dataset.periode;
+  });
+});
+
+
+//  Bouton Filtrer (dates personnalisées) 
+document.getElementById('btnFiltrer').addEventListener('click', () => {
+  window.location.href = "{{ path('app_graphiques') }}?debut="
+    + document.getElementById('dateDebut').value
+    + "&fin="
+    + document.getElementById('dateFin').value;
+});
+
+
+//  Switch Temps réel 
+let iv = null; // ID de l'intervalle, null = pas de rafraîchissement actif
+
+document.getElementById('tempsReel').addEventListener('change', function () {
+  const badge = document.getElementById('statut-connexion');
+
+  if (this.checked) {
+    badge.className = 'badge bg-success fs-6 px-3 py-2';
+    badge.innerHTML = 'Temps reel actif';
+    iv = setInterval(() => {
+      // Toutes les 30s, appel API pour récupérer la dernière mesure
+      // fetch("{{ path('app_graphiques_api') }}")
+      //   .then(r => r.json())
+      //   .then(data => { /* mettre à jour les cartes résumé */ })
+      console.log('rafraichissement...');
+    }, 30000); // 30000 ms = 30 secondes
+  } else {
+    clearInterval(iv); // annule le setInterval avec son ID
+    iv = null;
+    badge.className = 'badge {{ donneesReelles ? "bg-success" : "bg-warning text-dark" }} fs-6 px-3 py-2';
+    badge.innerHTML = 'Mise a jour manuelle';
+  }
+});
+
+</script>
+{% endblock %}

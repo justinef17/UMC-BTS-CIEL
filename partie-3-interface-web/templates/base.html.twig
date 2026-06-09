@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta name="google-site-verification" content="_APIAtHiq8Nb_wX6ls64nej15v-HjYJWrSiEc-LwmVw" />
+  <title>{% block title %}UMC - Unité Mobile de Compostage{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  {% block stylesheets %}{% endblock %}
+  <script data-goatcounter="https://umc-maupertuis.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</head>
+
+<body class="bg-light">
+
+  {# Barre supérieure #}
+  <div class="bg-success bg-gradient text-white py-1 px-3 d-flex justify-content-between flex-wrap" style="font-size:0.8rem;">
+    <span>Saint-Malo &nbsp;|&nbsp; contact@tridimension.fr</span>
+    <span>Projet BTS CIEL - Lycée Maupertuis</span>
+  </div>
+
+  {# Header logos #}
+  <div class="bg-white border-bottom border-success border-3 py-3">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-3">
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+
+        <a href="https://tridimension.fr/" target="_blank">
+          <img src="{{ asset('img/Logo-tridimension-01.png.webp') }}" alt="Logo Tridimension" style="height:60px; object-fit:contain;">
+        </a>
+
+        <div class="vr mx-2" style="height:55px;"></div>
+
+        <a href="https://lyceemaupertuis.bzh/lenseignement-superieur/" target="_blank">
+          <img src="{{ asset('img/cropped-logo-maupertuis-lycee-591561990.png') }}" alt="Logo Lycée Maupertuis" style="height:55px; object-fit:contain;">
+        </a>
+
+        <div class="vr mx-2" style="height:55px;"></div>
+
+        <div>
+          <div class="fw-bold text-success fs-5 lh-1">UMC</div>
+          <div class="text-muted small">Unité Mobile de Compostage</div>
+        </div>
+      </div>
+
+      <a href="https://lyceemaupertuis.bzh/lenseignement-superieur/" target="_blank" class="text-decoration-none">
+        <span class="badge bg-success fs-6 px-3 py-2">BTS CIEL - 2024-2026</span>
+      </a>
+    </div>
+  </div>
+
+  {# Barre de navigation #}
+  <nav class="navbar navbar-expand-sm bg-success navbar-dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUMC">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarUMC">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold {% if app.request.get('_route') == 'app_accueil' %}active{% endif %}"
+               href="{{ path('app_accueil') }}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold {% if app.request.get('_route') == 'app_synoptique' %}active{% endif %}"
+               href="{{ path('app_synoptique') }}">Synoptique</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold {% if app.request.get('_route') == 'app_graphiques' %}active{% endif %}"
+               href="{{ path('app_graphiques') }}">Graphiques</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold {% if app.request.get('_route') == 'app_telechargement' %}active{% endif %}"
+               href="{{ path('app_telechargement') }}">Téléchargement</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold {% if app.request.get('_route') == 'app_contact' %}active{% endif %}"
+               href="{{ path('app_contact') }}">Contacts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold {% if app.request.get('_route') == 'app_ressources' %}active{% endif %}"
+               href="{{ path('app_ressources') }}">Ressources</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {# Contenu spécifique à chaque page #}
+  {% block body %}{% endblock %}
+
+  {# Footer #}
+  <footer class="bg-dark text-white pt-4 pb-3 mt-3">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="fw-bold text-success mb-2">UMC - Unité Mobile de Compostage</div>
+          <p class="text-secondary small">
+            Projet BTS CIEL mené en partenariat avec<br>
+            <a href="https://tridimension.fr/" target="_blank" class="text-success">TRIDIMENSION</a> - Saint-Malo
+          </p>
+        </div>
+        <div class="col-md-4">
+          <div class="fw-bold text-success mb-2">Navigation</div>
+          <ul class="list-unstyled small text-secondary">
+            <li><a href="{{ path('app_accueil') }}" class="text-secondary text-decoration-none">Accueil</a></li>
+            <li><a href="{{ path('app_synoptique') }}" class="text-secondary text-decoration-none">Synoptique</a></li>
+            <li><a href="{{ path('app_graphiques') }}" class="text-secondary text-decoration-none">Graphiques</a></li>
+            <li><a href="{{ path('app_telechargement') }}" class="text-secondary text-decoration-none">Téléchargement</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <div class="fw-bold text-success mb-2">Lycée Maupertuis</div>
+          <p class="text-secondary small">
+            Projet réalisé dans le cadre du<br>
+            <strong class="text-white">BTS CIEL</strong> - Promotion 2024-2026<br>
+            Saint-Malo, Bretagne
+          </p>
+        </div>
+      </div>
+      <hr class="border-secondary mt-3">
+      <p class="text-center text-secondary mb-0 small">
+        © 2024-2026 UMC - Projet BTS CIEL - Lycée Maupertuis - En partenariat avec TRIDIMENSION
+      </p>
+    </div>
+  </footer>
+
+  {% block javascripts %}{% endblock %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+</body>
+</html>
